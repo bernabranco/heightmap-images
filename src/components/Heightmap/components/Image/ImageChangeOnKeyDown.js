@@ -13,7 +13,6 @@ export const changeImageOnKeyDown = (imageId, imagesData, positions, colors, mes
         switch (e.key) {
           case 'ArrowLeft':
           if(imageId > 0){
-            // left arrow
             imageId -= 1;
             changeImageOnPress(imageId, imagesData, positions, colors, mesh);
             console.log('key left pressed...')
@@ -21,7 +20,6 @@ export const changeImageOnKeyDown = (imageId, imagesData, positions, colors, mes
           break;
           case 'ArrowUp':
           if(imageId < traits.image_list_size - 1){
-            // up arrow
             imageId += 1;
             changeImageOnPress(imageId, imagesData, positions, colors, mesh);
             console.log('key left pressed...')
@@ -29,7 +27,6 @@ export const changeImageOnKeyDown = (imageId, imagesData, positions, colors, mes
           break;
           case 'ArrowRight':
           if(imageId < traits.image_list_size - 1){
-            // right arrow
             imageId += 1;
             changeImageOnPress(imageId, imagesData, positions, colors, mesh);
             console.log('key right pressed...')
@@ -37,7 +34,6 @@ export const changeImageOnKeyDown = (imageId, imagesData, positions, colors, mes
           break;
           case 'ArrowDown':
           if(imageId > 0){
-            // down arrow
             imageId -= 1;
             changeImageOnPress(imageId, imagesData, positions, colors, mesh);
             console.log('key right pressed...')
