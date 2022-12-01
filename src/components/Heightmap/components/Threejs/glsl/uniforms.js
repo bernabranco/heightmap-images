@@ -1,0 +1,21 @@
+export const uniforms = `
+uniform vec2 u_resolution;
+uniform float u_time;
+uniform float u_sound;
+uniform float u_size;
+uniform float u_speed;
+uniform float u_offset_x;
+uniform float u_offset_y;
+uniform float u_offset_z;
+uniform float u_noise_x;
+uniform float u_noise_y;
+uniform float u_noise_z;
+uniform float u_amplitude_x;
+uniform float u_amplitude_y;
+uniform float u_amplitude_z;
+uniform float u_sound_intensity;
+uniform float u_contrast;
+uniform float u_vertex_red;
+uniform float u_vertex_green;
+uniform float u_vertex_blue;
+`;
