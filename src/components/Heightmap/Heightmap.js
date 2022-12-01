@@ -1,33 +1,26 @@
-import { React, useEffect, useState } from "react";
+import { React } from "react";
 import { ImageDisplay } from "./components/Image/ImageDisplay";
-import { ExportControls } from "../Exporter/Exporter";
-import { FullScreenButton } from "../../styles/App.styles";
+import { exportImage, exportText } from "../Exporter/Exporter";
+import { Button, ButtonContainer } from "../../styles/App.styles";
 import { openFullscreen } from "../../utils/OpenFullscreen";
 import Threejs from "./components/Threejs/Threejs";
-import Loading from "../Loading/Loading";
 
 export default function Heightmap() {
-  const [userInterface, setUserInterface] = useState();
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setUserInterface(true);
-      setLoading(true);
-    }, 5000);
-  });
-
   return (
-    <>
-      <FullScreenButton onClick={openFullscreen}>
-        Go Fullscreen
-      </FullScreenButton>
-      <ExportControls />
+    <div style={{boxSizing:'border-box', padding:'2rem'}}>
+      <ButtonContainer>     
+        <Button onClick={openFullscreen}>
+          Go Fullscreen
+        </Button>
+        <Button onClick={exportImage}>
+          Export Image
+        </Button>
+        <Button onClick={exportText}>
+          Export Info
+        </Button>
+      </ButtonContainer>
       <ImageDisplay />
-      {userInterface && (
-        <Threejs id="canvasExport" width="8000" height="8000" />
-      )}
-      {loading === false && <Loading></Loading>}
-    </>
+      <Threejs id="canvasExport" width="8000" height="8000" />
+    </div>
   );
 }

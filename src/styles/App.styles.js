@@ -1,8 +1,13 @@
 import styled from "styled-components";
 
-export const FullScreenButton = styled.button`
+export const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+export const Button = styled.button`
   position: relative;
-  width: "5rem";
+  width: 15rem;
   background-color: black;
   border-style: solid;
   border-color: rgba(100, 100, 100, 1);
@@ -12,8 +17,35 @@ export const FullScreenButton = styled.button`
   box-sizing: border-box;
   padding: 1rem;
   margin: 0.5rem;
-  margin-bottom: 2rem;
-  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
   font-weight: bold;
   z-index: 1;
+`;
+
+export const ImageContainer = styled.div`
+  position: relative
+  width: 20rem;
+  max-width: 20rem;
+  display: flex;
+  flex-wrap: wrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+`;
+
+export const Image = styled.img`
+  position: relative;
+  width: 3rem;
+  height: 3rem;
+  z-index: 10;
+  opacity: 1;
+  margin:0.5rem;
+  border-style: solid;
+  border-width: 1px;
+
+  &:hover {
+    border-style: solid;
+    border-width: 1px;
+    border-color: white;
+  }
 `;
