@@ -10,8 +10,8 @@ export function changeImageOnPress(imageId, imagesData, positions, colors, mesh)
 // change displayed images when key is pressed
 export const changeImageOnKeyDown = (imageId, imagesData, positions, colors, mesh) => {
     document.onkeydown = function(e) {
-        switch (e.keyCode) {
-          case 37:
+        switch (e.key) {
+          case 'ArrowLeft':
           if(imageId > 0){
             // left arrow
             imageId -= 1;
@@ -19,10 +19,26 @@ export const changeImageOnKeyDown = (imageId, imagesData, positions, colors, mes
             console.log('key left pressed...')
           }
           break;
-          case 39:
+          case 'ArrowUp':
+          if(imageId < traits.image_list_size - 1){
+            // up arrow
+            imageId += 1;
+            changeImageOnPress(imageId, imagesData, positions, colors, mesh);
+            console.log('key left pressed...')
+          }
+          break;
+          case 'ArrowRight':
           if(imageId < traits.image_list_size - 1){
             // right arrow
             imageId += 1;
+            changeImageOnPress(imageId, imagesData, positions, colors, mesh);
+            console.log('key right pressed...')
+          }
+          break;
+          case 'ArrowDown':
+          if(imageId > 0){
+            // down arrow
+            imageId -= 1;
             changeImageOnPress(imageId, imagesData, positions, colors, mesh);
             console.log('key right pressed...')
           }
