@@ -1,4 +1,4 @@
-import { Container, StyledImage } from "./Image.styles";
+import { ImageContainer, Image } from "../../../../styles/App.styles";
 import * as traits from "../../../../utils/Traits";
 
 export const ImageDisplay = () => {
@@ -11,12 +11,12 @@ export const ImageDisplay = () => {
 
   const imgList = imgArray.map((item, index) => {
     return (
-      <StyledImage
+      <Image
         src={window.location.origin + `/images/${index}.jpg`}
         id={`image${index}`}
         key={`image${index}`}
-      ></StyledImage>
+      />
     );
   });
-  return <Container>{imgList}</Container>;
+  return <ImageContainer>{imgList}</ImageContainer>;
 };

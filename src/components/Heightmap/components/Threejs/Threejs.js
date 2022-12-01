@@ -1,5 +1,6 @@
 // Generative traits
 import * as imageSetup from "../Image/ImageSetup";
+import { imagesData } from "../../../../pages/LoadImages/LoadImages";
 import { changeImageOnKeyDown } from "../Image/ImageChangeOnKeyDown.js";
 import { changeImageOnClick } from "../Image/ImageChangeOnClick.js";
 import * as traits from "../../../../utils/Traits";
@@ -38,12 +39,11 @@ const three = () => {
   const sizes = [];
   const acc = [];
 
-  // analyze image list data (rgb)
-  const imagesData = imageSetup.analyzeImages();
+  console.log(imagesData);
 
   // create point grid
   imageSetup.createGrid(imagesData, positions, colors, sizes, acc);
-
+  
   // setup geometry
   const geometry = three_geometry.createBufferGeometry(
     positions,
