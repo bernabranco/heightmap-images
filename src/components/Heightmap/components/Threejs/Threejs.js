@@ -1,6 +1,7 @@
 // Generative traits
 import * as imageSetup from "../Image/ImageSetup";
-import * as imageManipulate from "../Image/ImageManipulate";
+import { changeImageOnKeyDown } from "../Image/ImageChangeOnKeyDown.js";
+import { changeImageOnClick } from "../Image/ImageChangeOnClick.js";
 import * as traits from "../../../../utils/Traits";
 
 // Threejs Stuff
@@ -21,39 +22,29 @@ export default function Threejs() {
 }
 
 const three = () => {
-  console.log("entered mode2");
+
   const zoom = traits.camera_zoom;
-
-  //export video settings
-  let startFrame = 0;
-  let endFrame = 360;
-  let exportVideo = false;
-  let frameCount = -1;
-
   const width = window.innerWidth;
   const height = window.innerHeight;
   const canvasSize = [width, height];
 
-  let mouseX = 1;
-  let mouseY = 1;
-
-  // Setup Scene
+  // setup Scene
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x000000);
 
-  // const color = new THREE.Color(hexColors.particleColor);
-  // Setup geometry initial attributes
+  // setup geometry initial attributes
   const positions = [];
   const colors = [];
   const sizes = [];
   const acc = [];
 
+  // analyze image list data (rgb)
   const imagesData = imageSetup.analyzeImages();
 
   // create point grid
   imageSetup.createGrid(imagesData, positions, colors, sizes, acc);
 
-  // Setup geometry
+  // setup geometry
   const geometry = three_geometry.createBufferGeometry(
     positions,
     colors,
@@ -61,19 +52,19 @@ const three = () => {
     acc
   );
 
-  // Setup material
+  // setup material
   const material = three_material.createCustomMaterial();
 
-  // Setup mesh
+  // setup mesh
   const mesh = new THREE.Points(geometry, material);
   mesh.rotation.x = traits.mesh_rotation_x;
   mesh.rotation.y = traits.mesh_rotation_y;
   mesh.rotation.z = traits.mesh_rotation_z;
 
-  // Setup Scene
+  // setup Scene
   scene.add(mesh);
 
-  // Setup camera
+  // setup camera
   const camera = new THREE.PerspectiveCamera(
     traits.camera_fov,
     width / height,
@@ -96,7 +87,7 @@ const three = () => {
   container.appendChild(renderer.domElement);
   console.log("append container");
 
-  // Setup Post Processing
+  // setup Post Processing
   const afterimagePass = three_post_processing.afterImageEffect();
   const bloomPass = three_post_processing.glowEffect(gui.params);
   const composer = three_post_processing.processingSetup(
@@ -107,28 +98,35 @@ const three = () => {
     bloomPass
   );
 
-  // Setup lighting
+  // setup lighting
   const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
   directionalLight.position.set(0, 0, 2);
 
   // Setup orbit Controls for camera
   const controls = new OrbitControls(camera, renderer.domElement);
 
-  // select image on click
-  imageManipulate.changeImageOnClick(imagesData, positions, colors, mesh);
+  // change display image when images is pressed
+  changeImageOnClick(imagesData, positions, colors, mesh);
 
-  // Animation / render frames
+  // change display image when key is pressed 
+  let imageId = 0;
+  changeImageOnKeyDown(imageId, imagesData, positions, colors, mesh);
+
+  let frameCount = -1;
+
+  // animation / render frames
   function animate() {
+    // frame count is used to represent time
+    frameCount++;
+
+    // update shader attributes
     mesh.geometry.attributes.position.needsUpdate = true;
     mesh.geometry.attributes.color.needsUpdate = true;
     mesh.geometry.attributes.size.needsUpdate = true;
 
-    frameCount++;
-
+    // update shader uiforms
     material.uniforms.u_time.value = frameCount * 0.01;
-
     material.uniforms.u_size.value = gui.params.particleSize;
-
     material.uniforms.u_noise_x.value = gui.params.noiseX;
     material.uniforms.u_noise_y.value = gui.params.noiseY;
     material.uniforms.u_noise_z.value = gui.params.noiseZ;
