@@ -1,6 +1,4 @@
 import * as THREE from "three";
-import { vertexShader } from "../glsl/vertex.js";
-import { fragmentShader } from "../glsl/fragment.js";
 import texture from "../../../../../texture/2d-shape/circle.png";
 
 // load vertex texture
@@ -14,7 +12,7 @@ export const uniforms = {
   u_time: { value: 1.0 },
   u_mouse: { value: new THREE.Vector2(0.0, 0.0) },
   u_size: { value: Math.random() * 100 },
-  u_sound: { value: 1.0 },
+  u_sound: { value: 10.0 },
   u_speed: { value: 1.0 },
   u_offset_x: { value: 1.0 },
   u_offset_y: { value: 1.0 },
@@ -32,14 +30,13 @@ export const uniforms = {
   u_sound_intensity: { value: 1.0 },
 };
 
-export function createCustomMaterial() {
-  console.log("create custom material");
+export function createCustomMaterial(vertexShader, fragmentShader) {
   const material = new THREE.ShaderMaterial({
     uniforms: uniforms,
     vertexShader: vertexShader,
     fragmentShader: fragmentShader,
     depthTest: false,
-    blending: THREE.AdditiveBlending,
+    blending: THREE.NormalBlending,
     transparent: true,
     alphaTest: false,
     vertexColors: true,

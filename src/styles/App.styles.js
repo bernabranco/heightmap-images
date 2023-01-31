@@ -3,11 +3,11 @@ import styled from "styled-components";
 export const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 
 export const Button = styled.button`
   position: relative;
-  width: 15rem;
+  width: 10rem;
   background-color: black;
   border-style: solid;
   border-color: rgba(100, 100, 100, 1);
@@ -19,6 +19,7 @@ export const Button = styled.button`
   margin: 0.5rem;
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
+  font-size: 0.7rem;
   font-weight: bold;
   z-index: 1;
 `;
@@ -39,7 +40,7 @@ export const Image = styled.img`
   height: 3rem;
   z-index: 10;
   opacity: 1;
-  margin:0.5rem;
+  margin: 0.5rem;
   border-style: solid;
   border-width: 1px;
 

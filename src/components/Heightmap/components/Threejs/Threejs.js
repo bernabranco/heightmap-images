@@ -3,7 +3,18 @@ import * as imageSetup from "../Image/ImageSetup";
 import { imagesData } from "../../../../pages/LoadImages/LoadImages";
 import { changeImageOnKeyDown } from "../Image/ImageChangeOnKeyDown.js";
 import { changeImageOnClick } from "../Image/ImageChangeOnClick.js";
-import * as traits from "../../../../utils/Traits";
+import * as traits from "../../../../presets/basic";
+
+// Import custom shaders
+import {
+  vertexShader as vertexShader1,
+  fragmentShader as fragmentShader1,
+} from "../../components/Threejs/glsl/shader1";
+
+import {
+  vertexShader as vertexShader2,
+  fragmentShader as fragmentShader2,
+} from "../../components/Threejs/glsl/shader2";
 
 // Threejs Stuff
 import * as THREE from "three";
@@ -14,6 +25,17 @@ import * as three_material from "./utils/material";
 import * as three_post_processing from "./utils/postprocessing";
 import { useEffect } from "react";
 
+// Audio Stuff
+import { volume } from "../../../Audio/Audio";
+import {
+  changeParticleSizeBasedOnAudioVolume,
+  switchImageBasedOnAudioVolume,
+} from "../../../Audio/utils";
+import {
+  updateUniformsBasedOnGui,
+  updateUniformsBasedOnGuiAndVolume,
+} from "./utils/updateUniforms";
+
 export default function Threejs() {
   useEffect(() => {
     three();
@@ -23,8 +45,7 @@ export default function Threejs() {
 }
 
 const three = () => {
-
-  const zoom = traits.camera_zoom;
+  const zoom = 900;
   const width = window.innerWidth;
   const height = window.innerHeight;
   const canvasSize = [width, height];
@@ -39,11 +60,9 @@ const three = () => {
   const sizes = [];
   const acc = [];
 
-  console.log(imagesData);
-
   // create point grid
   imageSetup.createGrid(imagesData, positions, colors, sizes, acc);
-  
+
   // setup geometry
   const geometry = three_geometry.createBufferGeometry(
     positions,
@@ -53,16 +72,29 @@ const three = () => {
   );
 
   // setup material
-  const material = three_material.createCustomMaterial();
+  const material1 = three_material.createCustomMaterial(
+    vertexShader1,
+    fragmentShader1
+  );
+  const material2 = three_material.createCustomMaterial(
+    vertexShader2,
+    fragmentShader2
+  );
 
   // setup mesh
-  const mesh = new THREE.Points(geometry, material);
-  mesh.rotation.x = traits.mesh_rotation_x;
-  mesh.rotation.y = traits.mesh_rotation_y;
-  mesh.rotation.z = traits.mesh_rotation_z;
+  const mesh1 = new THREE.Points(geometry, material1);
+  mesh1.rotation.x = traits.initial_mesh_rotation_x;
+  mesh1.rotation.y = traits.initial_mesh_rotation_y;
+  mesh1.rotation.z = traits.initial_mesh_rotation_z;
+
+  // setup mesh
+  const mesh2 = new THREE.Points(geometry, material2);
+  mesh2.rotation.x = traits.initial_mesh_rotation_x;
+  mesh2.rotation.y = traits.initial_mesh_rotation_y;
+  mesh2.rotation.z = traits.initial_mesh_rotation_z;
 
   // setup Scene
-  scene.add(mesh);
+  scene.add(mesh1, mesh2);
 
   // setup camera
   const camera = new THREE.PerspectiveCamera(
@@ -71,6 +103,7 @@ const three = () => {
     traits.camera_near,
     traits.camera_far
   );
+  camera.aspect = window.innerWidth / window.innerHeight;
   camera.position.z = zoom;
 
   // Setup renderer / canvas
@@ -106,11 +139,12 @@ const three = () => {
   const controls = new OrbitControls(camera, renderer.domElement);
 
   // change display image when images is pressed
-  changeImageOnClick(imagesData, positions, colors, mesh);
+  changeImageOnClick(imagesData, positions, colors, mesh1);
+  changeImageOnClick(imagesData, positions, colors, mesh2);
 
-  // change display image when key is pressed 
+  // change display image when key is pressed
   let imageId = 0;
-  changeImageOnKeyDown(imageId, imagesData, positions, colors, mesh);
+  changeImageOnKeyDown(imageId, imagesData, positions, colors, mesh1);
 
   let frameCount = -1;
 
@@ -119,48 +153,51 @@ const three = () => {
     // frame count is used to represent time
     frameCount++;
 
-    // update shader attributes
-    mesh.geometry.attributes.position.needsUpdate = true;
-    mesh.geometry.attributes.color.needsUpdate = true;
-    mesh.geometry.attributes.size.needsUpdate = true;
+    // update material
+    material1.needsUpdate = true;
+    material2.needsUpdate = true;
 
-    // update shader uiforms
-    material.uniforms.u_time.value = frameCount * 0.01;
-    material.uniforms.u_size.value = gui.params.particleSize;
-    material.uniforms.u_noise_x.value = gui.params.noiseX;
-    material.uniforms.u_noise_y.value = gui.params.noiseY;
-    material.uniforms.u_noise_z.value = gui.params.noiseZ;
-    material.uniforms.u_amplitude_x.value = gui.params.amplitudeX;
-    material.uniforms.u_amplitude_y.value = gui.params.amplitudeY;
-    material.uniforms.u_amplitude_z.value = gui.params.amplitudeZ;
-    material.uniforms.u_offset_x.value = gui.params.offsetX;
-    material.uniforms.u_offset_y.value = gui.params.offsetY;
-    material.uniforms.u_offset_z.value = gui.params.offsetZ;
-    material.uniforms.u_contrast.value = gui.params.colorContrast;
-    material.uniforms.u_vertex_red.value = gui.params.vertexRed;
-    material.uniforms.u_vertex_green.value = gui.params.vertexGreen;
-    material.uniforms.u_vertex_blue.value = gui.params.vertexBlue;
-    material.uniforms.u_sound_intensity.value = gui.params.soundIntensity;
+    // update mesh
+    mesh1.geometry.attributes.position.needsUpdate = true;
+    mesh1.geometry.attributes.color.needsUpdate = true;
+    mesh1.geometry.attributes.size.needsUpdate = true;
+
+    mesh1.rotation.x += gui.params.rotationX;
+    mesh1.rotation.y += gui.params.rotationY;
+    mesh1.rotation.z += gui.params.rotationZ;
+
+    // update passes
     bloomPass.threshold = gui.params.bloomThreshold;
     bloomPass.strength = gui.params.bloomStrength;
     afterimagePass.uniforms.damp.value = gui.params.exposure;
 
-    // Rotate Mesh
-    mesh.rotation.x += gui.params.rotationX;
-    mesh.rotation.y += gui.params.rotationY;
-    mesh.rotation.z += gui.params.rotationZ;
+    // update uniforms
+    // updateUniformsBasedOnGui(
+    //   material,
+    //   gui,
+    //   frameCount,
+    // );
+
+    updateUniformsBasedOnGuiAndVolume(material1, gui, frameCount, volume);
+    updateUniformsBasedOnGuiAndVolume(material2, gui, frameCount, volume);
+
+    // Sound Effects
+    switchImageBasedOnAudioVolume(1.5, volume, imagesData, positions, colors, mesh1);
+    switchImageBasedOnAudioVolume(1.5, volume, imagesData, positions, colors, mesh2);
 
     // choose between composer and renderer
-    if (gui.params.enableComposer || 8 > 0) {
+    if (gui.params.enableComposer) {
       composer.render();
     } else {
       renderer.render(scene, camera);
     }
 
     // play and stop animation
-    if (gui.params.animate) {
-      requestAnimationFrame(animate);
+    if (!gui.params.animate) {
+      frameCount = 1;
     }
+
+    requestAnimationFrame(animate);
   }
 
   animate();

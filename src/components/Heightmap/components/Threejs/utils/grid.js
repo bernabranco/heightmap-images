@@ -36,4 +36,3 @@ export function createGrid2d(imageData, positions, colors, sizes) {
     }
   }
 }
-
