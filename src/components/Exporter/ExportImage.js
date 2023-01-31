@@ -1,5 +1,3 @@
-import { imagesData } from "../../pages/LoadImages/LoadImages";
-
 // Export single image
 export function exportImage(frameCount) {
   var canvas = document.getElementById("canvasExport");
@@ -12,14 +10,4 @@ export function exportImage(frameCount) {
   document.body.appendChild(downloadLink);
   downloadLink.click();
   document.body.removeChild(downloadLink);
-}
-
-export function exportText(frameCount) {
-  const values = `
-      ${JSON.stringify(imagesData)}
-  `;
-
-  var FileSaver = require("file-saver");
-  var blob = new Blob([values], { type: "text/plain;charset=utf-8" });
-  FileSaver.saveAs(blob, "particle-2d-grid-" + frameCount);
 }
