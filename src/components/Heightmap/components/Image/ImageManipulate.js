@@ -1,4 +1,12 @@
-export const updateMeshGeometryProperties = (selectedImage, positions, colors, mesh) => {
+import { preset } from "../../../../presets/choosePreset";
+const traits = require(`../../../../presets/${preset}`);
+
+export const updateMeshGeometryProperties = (
+  selectedImage,
+  positions,
+  colors,
+  mesh
+) => {
   let colorIndex = 0;
   let positionIndex = 0;
   for (let i = 0; i < colors.length; i++) {
@@ -13,7 +21,7 @@ export const updateMeshGeometryProperties = (selectedImage, positions, colors, m
     colorIndex += 4;
     positionIndex += 3;
   }
-}
+};
 
 export function changeVideoFrames(
   imagesData,
@@ -24,4 +32,24 @@ export function changeVideoFrames(
 ) {
   let selectedImage = imagesData[counter].data;
   updateMeshGeometryProperties(selectedImage, positions, colors, mesh);
+}
+
+// switch vertex colors to next frames
+export function changeImageFrames(imagesData, positions, colors, mesh) {
+  let selectedImage =
+    imagesData[parseInt(Math.random() * traits.image_list_size)].data;
+  let colorIndex = 0;
+  let positionIndex = 0;
+  for (let i = 0; i < colors.length; i++) {
+    const r = selectedImage[colorIndex + 0] / 255;
+    const g = selectedImage[colorIndex + 1] / 255;
+    const b = selectedImage[colorIndex + 2] / 255;
+    mesh.geometry.attributes.color.setXYZ(i, r, g, b);
+    const x = positions[positionIndex + 0];
+    const y = positions[positionIndex + 1];
+    const z = 1.0 + r + g + b;
+    mesh.geometry.attributes.position.setXYZ(i, x, y, z);
+    colorIndex += 4;
+    positionIndex += 3;
+  }
 }

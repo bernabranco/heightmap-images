@@ -1,4 +1,5 @@
-import * as traits from "../../../../utils/Traits";
+import { preset } from "../../../../presets/choosePreset";
+const traits = require(`../../../../presets/${preset}`);
 
 const LIST_SIZE = traits.image_list_size;
 const imgWidth = Math.pow(traits.vertex_number, 0.5);
@@ -55,7 +56,7 @@ export function createGrid(imagesData, positions, colors, sizes, acc) {
       colors.push(r, g, b);
 
       //define particle sizes
-      sizes.push(traits.vertex_size);
+      sizes.push(1);
 
       //define particle position
       positions.push(
