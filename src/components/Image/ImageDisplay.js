@@ -1,7 +1,7 @@
-import { ImageContainer, Image } from "../../../../styles/App.styles";
+import { ImageContainer, Image } from "../../styles/App.styles";
 
-import { preset } from "../../../../presets/choosePreset";
-const traits = require(`../../../../presets/${preset}`);
+import { preset } from "../../presets/choosePreset";
+const traits = require(`../../presets/${preset}`);
 
 export const ImageDisplay = () => {
   const LIST_SIZE = traits.image_list_size;

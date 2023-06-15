@@ -1,13 +1,13 @@
 import { React } from "react";
-import { ImageDisplay } from "./components/Image/ImageDisplay";
-import { exportImage } from "../Exporter/ExportImage";
-import { exportPreset } from "../Exporter/ExportPreset";
+import { ImageDisplay } from "../../components/Image/ImageDisplay";
+import { exportImage } from "../../components/Exporter/ExportImage";
+import { exportPreset } from "../../components/Exporter/ExportPreset";
 import { Button, ButtonContainer } from "../../styles/App.styles";
 import { openFullscreen } from "../../utils/OpenFullscreen";
-import Threejs from "./components/Threejs/Threejs";
-import { Audio } from "../Audio/Audio";
+import Threejs from "../../components/ImageProcessing/Threejs";
+import { Audio } from "../../components/Audio/Audio";
 
-export default function Heightmap() {
+export default function Dashboard() {
   return (
     <div style={{ boxSizing: "border-box", padding: "2rem" }}>
       <Audio />

@@ -1,5 +1,5 @@
 import { GUI } from "dat.gui";
-import * as traits from "../../../../presets/basic";
+import * as traits from "../../presets/basic";
 
 export const params = {
   animate: true, // core

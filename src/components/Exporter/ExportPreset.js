@@ -1,4 +1,4 @@
-import * as gui from "../../components/Heightmap/components/Gui/Gui";
+import * as gui from "../Gui/Gui";
 
 const getPresetProperties = () => {
   return `

@@ -1,5 +1,5 @@
-import { preset } from "../../../../presets/choosePreset";
-const traits = require(`../../../../presets/${preset}`);
+import { preset } from "../../presets/choosePreset";
+const traits = require(`../../presets/${preset}`);
 
 const LIST_SIZE = traits.image_list_size;
 const imgWidth = Math.pow(traits.vertex_number, 0.5);

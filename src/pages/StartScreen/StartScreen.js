@@ -7,7 +7,7 @@ import {
 } from "./StartScreen.Styles";
 import { useNavigate } from "react-router";
 import ReactLoading from "react-loading";
-import * as imageSetup from "../../components/Heightmap/components/Image/ImageSetup";
+import * as imageSetup from "../../components/Image/ImageSetup";
 
 let imagesData;
 export default function LoadImages() {
@@ -21,8 +21,8 @@ export default function LoadImages() {
       imagesData = imageSetup.analyzeImages();
       console.log("images have loaded...");
       setIsLoading(false);
-      navigate("/heightmap");
-    }, 10000);
+      navigate("/dashboard");
+    }, 5000);
   };
 
   const loadingStyle = {

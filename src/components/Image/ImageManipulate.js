@@ -1,5 +1,5 @@
-import { preset } from "../../../../presets/choosePreset";
-const traits = require(`../../../../presets/${preset}`);
+import { preset } from "../../presets/choosePreset";
+const traits = require(`../../presets/${preset}`);
 
 export const updateMeshGeometryProperties = (
   selectedImage,

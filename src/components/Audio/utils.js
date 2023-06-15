@@ -1,4 +1,8 @@
-import * as imageManipulate from "../Heightmap/components/Image/ImageManipulate";
+import { preset } from "../../presets/choosePreset";
+import { changeImage } from "../Image/ImageChangeOnClick";
+const traits = require(`../../presets/${preset}`);
+
+const LIST_SIZE = traits.image_list_size;
 
 // switch images based on volume
 export const switchImageBasedOnAudioVolume = (
@@ -7,10 +11,10 @@ export const switchImageBasedOnAudioVolume = (
   imagesData,
   positions,
   colors,
-  mesh
+  meshes
 ) => {
   if (volume >= frequency) {
-    imageManipulate.changeImageFrames(imagesData, positions, colors, mesh);
+    changeImage(imagesData, positions, colors, meshes);
   }
 };
 

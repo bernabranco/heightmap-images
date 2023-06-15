@@ -1,20 +1,20 @@
 // Generative traits
 import * as imageSetup from "../Image/ImageSetup";
-import { imagesData } from "../../../../pages/LoadImages/LoadImages";
+import { imagesData } from "../../pages/StartScreen/StartScreen";
 import { changeImageOnKeyDown } from "../Image/ImageChangeOnKeyDown.js";
 import { changeImageOnClick } from "../Image/ImageChangeOnClick.js";
-import * as traits from "../../../../presets/basic";
+import * as traits from "../../presets/basic";
 
 // Import custom shaders
 import {
   vertexShader as vertexShader1,
   fragmentShader as fragmentShader1,
-} from "../../components/Threejs/glsl/shader1";
+} from "./glsl/shader1";
 
 import {
   vertexShader as vertexShader2,
   fragmentShader as fragmentShader2,
-} from "../../components/Threejs/glsl/shader2";
+} from "./glsl/shader2";
 
 // Threejs Stuff
 import * as THREE from "three";
@@ -26,14 +26,15 @@ import * as three_post_processing from "./utils/postprocessing";
 import { useEffect } from "react";
 
 // Audio Stuff
-import { volume } from "../../../Audio/Audio";
+import { volume } from "../Audio/Audio";
 import {
   changeParticleSizeBasedOnAudioVolume,
   switchImageBasedOnAudioVolume,
-} from "../../../Audio/utils";
+} from "../Audio/utils";
 import {
   updateUniformsBasedOnGui,
   updateUniformsBasedOnGuiAndVolume,
+  updateUniformsBasedOnVolume,
 } from "./utils/updateUniforms";
 
 export default function Threejs() {
@@ -54,13 +55,15 @@ const three = () => {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x000000);
 
+  const nrMeshes = 1;
+
   // setup geometry initial attributes
   const positions = [];
   const colors = [];
   const sizes = [];
   const acc = [];
 
-  // create point grid
+  // create point grid with imageData
   imageSetup.createGrid(imagesData, positions, colors, sizes, acc);
 
   // setup geometry
@@ -71,30 +74,25 @@ const three = () => {
     acc
   );
 
-  // setup material
-  const material1 = three_material.createCustomMaterial(
+  //setup material
+  const material = three_material.createCustomMaterial(
     vertexShader1,
     fragmentShader1
   );
-  const material2 = three_material.createCustomMaterial(
-    vertexShader2,
-    fragmentShader2
-  );
 
   // setup mesh
-  const mesh1 = new THREE.Points(geometry, material1);
-  mesh1.rotation.x = traits.initial_mesh_rotation_x;
-  mesh1.rotation.y = traits.initial_mesh_rotation_y;
-  mesh1.rotation.z = traits.initial_mesh_rotation_z;
+  const mesh = new THREE.Points(geometry, material);
 
-  // setup mesh
-  const mesh2 = new THREE.Points(geometry, material2);
-  mesh2.rotation.x = traits.initial_mesh_rotation_x;
-  mesh2.rotation.y = traits.initial_mesh_rotation_y;
-  mesh2.rotation.z = traits.initial_mesh_rotation_z;
+  mesh.position.x = 0;
+  mesh.position.y = 0;
+  mesh.position.z = 0;
 
-  // setup Scene
-  scene.add(mesh1, mesh2);
+  mesh.rotation.x = traits.initial_mesh_rotation_x;
+  mesh.rotation.y = traits.initial_mesh_rotation_y;
+  mesh.rotation.z = traits.initial_mesh_rotation_z;
+
+  // setup scene
+  scene.add(mesh);
 
   // setup camera
   const camera = new THREE.PerspectiveCamera(
@@ -106,7 +104,7 @@ const three = () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.position.z = zoom;
 
-  // Setup renderer / canvas
+  // setup renderer / canvas
   const renderer = new THREE.WebGLRenderer({
     preserveDrawingBuffer: true,
     alpha: false,
@@ -139,51 +137,49 @@ const three = () => {
   const controls = new OrbitControls(camera, renderer.domElement);
 
   // change display image when images is pressed
-  changeImageOnClick(imagesData, positions, colors, mesh1);
-  changeImageOnClick(imagesData, positions, colors, mesh2);
+  changeImageOnClick(imagesData, positions, colors, mesh);
 
   // change display image when key is pressed
   let imageId = 0;
-  changeImageOnKeyDown(imageId, imagesData, positions, colors, mesh1);
+  changeImageOnKeyDown(imageId, imagesData, positions, colors, mesh);
 
   let frameCount = -1;
 
   // animation / render frames
   function animate() {
-    // frame count is used to represent time
+    // frameCount is used to represent time
     frameCount++;
 
-    // update material
-    material1.needsUpdate = true;
-    material2.needsUpdate = true;
+    for (let i = 0; i < nrMeshes; i++) {
+      // update material and mesh
+      material.needsUpdate = true;
+      mesh.geometry.attributes.position.needsUpdate = true;
+      mesh.geometry.attributes.color.needsUpdate = true;
+      mesh.geometry.attributes.size.needsUpdate = true;
 
-    // update mesh
-    mesh1.geometry.attributes.position.needsUpdate = true;
-    mesh1.geometry.attributes.color.needsUpdate = true;
-    mesh1.geometry.attributes.size.needsUpdate = true;
+      // rotate mesh
+      mesh.rotation.x += gui.params.rotationX;
+      mesh.rotation.y += gui.params.rotationY;
+      mesh.rotation.z += gui.params.rotationZ;
 
-    mesh1.rotation.x += gui.params.rotationX;
-    mesh1.rotation.y += gui.params.rotationY;
-    mesh1.rotation.z += gui.params.rotationZ;
+      // sound Effects
+      updateUniformsBasedOnGui(material, gui, frameCount, volume);
+      updateUniformsBasedOnVolume(material, gui, frameCount, volume);
+    }
 
     // update passes
     bloomPass.threshold = gui.params.bloomThreshold;
     bloomPass.strength = gui.params.bloomStrength;
     afterimagePass.uniforms.damp.value = gui.params.exposure;
 
-    // update uniforms
-    // updateUniformsBasedOnGui(
-    //   material,
-    //   gui,
-    //   frameCount,
+    // switchImageBasedOnAudioVolume(
+    //   1.5,
+    //   volume,
+    //   imagesData,
+    //   positions,
+    //   colors,
+    //   meshes
     // );
-
-    updateUniformsBasedOnGuiAndVolume(material1, gui, frameCount, volume);
-    updateUniformsBasedOnGuiAndVolume(material2, gui, frameCount, volume);
-
-    // Sound Effects
-    switchImageBasedOnAudioVolume(1.5, volume, imagesData, positions, colors, mesh1);
-    switchImageBasedOnAudioVolume(1.5, volume, imagesData, positions, colors, mesh2);
 
     // choose between composer and renderer
     if (gui.params.enableComposer) {
@@ -204,7 +200,7 @@ const three = () => {
 
   gui.createGUI(
     gui.params,
-    geometry,
+    //geometries,
     scene,
     composer,
     afterimagePass,

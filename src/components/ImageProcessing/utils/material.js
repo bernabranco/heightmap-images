@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import texture from "../../../../../texture/2d-shape/circle.png";
+import texture from "../../../texture/2d-shape/circle.png";
 
 // load vertex texture
 var textureForm = new THREE.TextureLoader().load(texture);

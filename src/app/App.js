@@ -1,18 +1,18 @@
 import { React } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Heightmap from "../components/Heightmap/Heightmap";
-import LoadImages from "../pages/LoadImages/LoadImages";
+import Heightmap from "../pages/Dashboard/Dashboard";
+import StartScreen from "../pages/StartScreen/StartScreen";
+import Dashboard from "../pages/Dashboard/Dashboard";
 
 function App() {
-
   return (
     <>
       <Router>
         <div id="container">
           <Routes>
-            <Route exact path="/" element={<LoadImages />} />
-            <Route path="/heightmap" element={<Heightmap />} />
+            <Route exact path="/" element={<StartScreen />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </div>
       </Router>
