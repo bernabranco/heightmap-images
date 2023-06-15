@@ -4,7 +4,7 @@ import {
   LoadingContainer,
   Text,
   TextContainer,
-} from "./LoadImages.styles";
+} from "./StartScreen.Styles";
 import { useNavigate } from "react-router";
 import ReactLoading from "react-loading";
 import * as imageSetup from "../../components/Heightmap/components/Image/ImageSetup";
