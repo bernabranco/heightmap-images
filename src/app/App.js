@@ -1,22 +1,23 @@
 import { React } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Heightmap from "../pages/Dashboard/Dashboard";
-import StartScreen from "../pages/StartScreen/StartScreen";
+
 import Dashboard from "../pages/Dashboard/Dashboard";
+import LoadImages from "../pages/LoadImages/LoadImages";
+import { ImageProvider } from "../store/ImageContext";
 
 function App() {
   return (
-    <>
+    <ImageProvider>
       <Router>
         <div id="container">
           <Routes>
-            <Route exact path="/" element={<StartScreen />} />
+            <Route exact path="/" element={<LoadImages />} />
             <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </div>
       </Router>
-    </>
+    </ImageProvider>
   );
 }
 

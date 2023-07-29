@@ -28,9 +28,11 @@ export const updateUniformsBasedOnVolume = (
   volume
 ) => {
   material.uniforms.u_sound_intensity.value = gui.params.soundIntensity;
+  console.log(gui.params.soundIntensity);
   material.uniforms.u_size.value *= parseFloat(volume);
-  material.uniforms.u_offset_x.value *= parseFloat(volume);
-  material.uniforms.u_offset_y.value *= parseFloat(volume);
-  material.uniforms.u_sound =
-    parseFloat(volume) * material.uniforms.u_sound_intensity.value * 100;
+
+  if (gui.params.soundIntensity !== 0) {
+    material.uniforms.u_offset_x.value *= parseFloat(volume);
+    material.uniforms.u_offset_y.value *= parseFloat(volume);
+  }
 };

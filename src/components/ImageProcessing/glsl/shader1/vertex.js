@@ -84,7 +84,7 @@ const vertexShader = `
     vec3 vertexPosition = position;
     vec3 acc = acceleration;
 
-    float sound = u_sound * u_sound_intensity;
+    float sound = u_sound_intensity;
 
     float time = u_time * u_speed;
 

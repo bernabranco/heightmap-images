@@ -67,12 +67,25 @@ function Audio() {
   }, []);
 
   return (
-    <>
-      <StyledTitle>Mic Volume: </StyledTitle>
-      <StyledInfo>{volumeValue ? volumeValue : 0}</StyledInfo>
-      <StyledTitle>Mic Frequency: </StyledTitle>
-      <StyledInfo>{frequencyValue ? frequencyValue : 0}</StyledInfo>
-    </>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        borderStyle: "solid",
+        borderColor: "white",
+        borderWidth: 1,
+      }}
+    >
+      <StyledInfo>
+        {volumeValue ? "volume: " + parseFloat(volumeValue).toFixed(2) : 0}
+      </StyledInfo>
+
+      <StyledInfo>
+        {frequencyValue
+          ? "frequency: " + parseFloat(frequencyValue).toFixed(2)
+          : 0}
+      </StyledInfo>
+    </div>
   );
 }
 

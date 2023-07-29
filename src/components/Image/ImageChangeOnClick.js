@@ -23,8 +23,14 @@ export function changeImageWithClick(e, imagesData, positions, colors, meshes) {
   );
 }
 
-export function changeImage(imagesData, positions, colors, meshes) {
-  let imageIndex = parseInt(Math.random() * LIST_SIZE);
+export function changeImage(
+  imagesData,
+  imagesLength,
+  positions,
+  colors,
+  meshes
+) {
+  let imageIndex = parseInt(Math.random() * imagesLength);
   let selectedImage = imagesData[imageIndex].data;
   imageManipulate.updateMeshGeometryProperties(
     selectedImage,
@@ -35,8 +41,14 @@ export function changeImage(imagesData, positions, colors, meshes) {
 }
 
 // change image by clicking on it
-export function changeImageOnClick(imagesData, positions, colors, meshes) {
-  for (let i = 0; i < LIST_SIZE; i++) {
+export function changeImageOnClick(
+  imagesData,
+  imagesLength,
+  positions,
+  colors,
+  meshes
+) {
+  for (let i = 0; i < imagesLength; i++) {
     const image = document.getElementById(`image${i}`);
     image.onclick = (e) =>
       changeImageWithClick(e, imagesData, positions, colors, meshes);

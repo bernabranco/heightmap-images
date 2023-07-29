@@ -1,51 +1,15 @@
 import { preset } from "../../presets/choosePreset";
 const traits = require(`../../presets/${preset}`);
 
-const LIST_SIZE = traits.image_list_size;
 const imgWidth = Math.pow(traits.vertex_number, 0.5);
 const imgHeight = Math.pow(traits.vertex_number, 0.5);
-
-// create bank of images
-let texture;
-let images = [];
-for (var i = 0; i < LIST_SIZE; i++) {
-  texture = window.location.origin + `/images/${i}.jpg`;
-  var imgSrc = texture;
-  var img = new Image();
-  img.src = imgSrc;
-  images.push(img);
-}
-
-// analyze image data
-export const analyzeImages = () => {
-  let imagesData = [];
-
-  for (var i = 0; i < LIST_SIZE; i++) {
-    // Create canvas
-    var canvas = document.createElement("canvas");
-    canvas.width = imgWidth;
-    canvas.height = imgHeight;
-    document.body.appendChild(canvas);
-
-    // Draw image
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(images[i], 0, 0, imgWidth, imgHeight);
-
-    // Store image pixel colors
-    const imgData = ctx.getImageData(0, 0, imgWidth, imgHeight);
-    imagesData.push(imgData);
-
-    // Remove unnecessary canvas
-    document.body.removeChild(canvas);
-  }
-
-  return imagesData;
-};
 
 // create 2D grid based on the color of the first image of the list
 export function createGrid(imagesData, positions, colors, sizes, acc) {
   let j = 0;
   const imageData = imagesData[0];
+
+  console.log(imagesData);
 
   for (let x = 0; x < imgWidth; x++) {
     for (let y = 0; y < imgHeight; y++) {
