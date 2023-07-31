@@ -22,7 +22,7 @@ const vertexShader = `
     return newPosition;
   }
 
-  vec3 applyOffset(vec3 newPosition, float sound, float soundZ){
+  vec3 applyOffset(vec3 newPosition, float sound){
     if(sound > 0.0 ) {
       newPosition.x *= u_offset_x + sound;
       newPosition.y *= u_offset_y + sound;
@@ -54,15 +54,15 @@ const vertexShader = `
     return newPosition;
   }
 
-  vec3 applyPerlinNoise(vec3 newPosition, float time, float u_amplitude_x, float u_amplitude_y, float u_amplitude_z){
+  vec3 applyPerlinNoise(vec3 newPosition){
     if(u_amplitude_x > 0.0){
-      newPosition.x *= snoise(newPosition.xyz*u_amplitude_x + time);
+      newPosition.x *= snoise(newPosition.xyz*u_amplitude_x * u_time*u_speed);
     }
     if(u_amplitude_y > 0.0){
-      newPosition.y *= snoise(newPosition.xyz*u_amplitude_y + time);
+      newPosition.y *= snoise(newPosition.xyz*u_amplitude_y * u_time*u_speed);
     }
     if(u_amplitude_z > 0.0){
-      newPosition.z *= snoise(newPosition.xyz*u_amplitude_z + time);
+      newPosition.z *= snoise(newPosition.xyz*u_amplitude_z * u_time*u_speed);
     }
     return newPosition;
   }
@@ -74,8 +74,8 @@ const vertexShader = `
   }
 
   vec3 applySinCos2(vec3 newPosition){
-    newPosition.x += sin(u_noise_x * newPosition.y + u_amplitude_x*u_time);
-    newPosition.x += cos(u_noise_y * newPosition.x + u_amplitude_y*u_time);
+    newPosition.x += sin(u_noise_x * newPosition.y + u_amplitude_x*u_time*u_speed);
+    newPosition.x += cos(u_noise_y * newPosition.x + u_amplitude_y*u_time*u_speed);
     return newPosition;
   }
     
@@ -89,8 +89,10 @@ const vertexShader = `
     float time = u_time * u_speed;
 
     // apply position effects
-    vertexPosition.xyz = applyPhysics(vertexPosition, acc);
-    vertexPosition.xyz = applyOffset(vertexPosition, sound, 1.0);
+    // vertexPosition.xyz = applyPhysics(vertexPosition, acc);
+    vertexPosition.xyz =  applyPerlinNoise(vertexPosition);
+    // vertexPosition.xyz =  applySinCos1(vertexPosition);
+    vertexPosition.xyz = applyOffset(vertexPosition, sound);
  
 
     // position points

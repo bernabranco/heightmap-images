@@ -1,5 +1,5 @@
+// update shader uiforms
 export const updateUniformsBasedOnGui = (material, gui, frameCount, volume) => {
-  // update shader uiforms
   material.uniforms.u_time.value = frameCount * 0.01;
   material.uniforms.u_speed.value = gui.params.particleSpeed;
   material.uniforms.u_size.value =
@@ -28,10 +28,9 @@ export const updateUniformsBasedOnVolume = (
   volume
 ) => {
   material.uniforms.u_sound_intensity.value = gui.params.soundIntensity;
-  console.log(gui.params.soundIntensity);
-  material.uniforms.u_size.value *= parseFloat(volume);
 
   if (gui.params.soundIntensity !== 0) {
+    material.uniforms.u_size.value *= parseFloat(volume);
     material.uniforms.u_offset_x.value *= parseFloat(volume);
     material.uniforms.u_offset_y.value *= parseFloat(volume);
   }

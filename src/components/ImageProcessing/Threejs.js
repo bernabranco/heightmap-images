@@ -22,7 +22,7 @@ import * as three_material from "./utils/material";
 
 import * as three_geometry from "./utils/geometry";
 
-import { volume } from "../Audio/Audio";
+import { volume } from "../Menu/components/Audio/Audio";
 
 import { updateUniformsBasedOnGui } from "./utils/updateUniforms";
 
@@ -151,6 +151,10 @@ const Threejs = () => {
       // Update uniforms based on GUI and audio volume
       updateUniformsBasedOnGui(material, gui, frameCount, volume);
       updateUniformsBasedOnVolume(material, gui, frameCount, volume);
+
+      mesh.rotation.x += gui.params.rotationX;
+      mesh.rotation.y += gui.params.rotationY;
+      mesh.rotation.z += gui.params.rotationZ;
 
       if (volume > 2) {
         changeImage(imagesData, uploadedImages.length, positions, colors, mesh);
