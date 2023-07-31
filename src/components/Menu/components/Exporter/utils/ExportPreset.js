@@ -1,4 +1,4 @@
-import * as gui from "../Gui/Gui";
+import * as gui from "../../../../Gui/Gui";
 
 const getPresetProperties = () => {
   return `
@@ -60,7 +60,6 @@ const getPresetProperties = () => {
 };
 
 export function exportPreset() {
-  // download preset
   const values = getPresetProperties();
   var FileSaver = require("file-saver");
   var blob = new Blob([values], { type: "text/plain;charset=utf-8" });

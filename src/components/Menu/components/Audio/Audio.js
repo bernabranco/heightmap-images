@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from "react";
-import { StyledInfo, StyledTitle } from "./Audio.styles";
+import { AudioContainer, Info, Title } from "./Audio.styles";
 
 let frequency;
 let volume;
@@ -39,7 +39,7 @@ function Audio() {
 
         frequency = (idx * ctx.sampleRate) / analyser.fftSize;
         // to display in UI
-        setFrequencyValue(frequency);
+        setFrequencyValue(frequency.toFixed(2));
       }
 
       function analyzeVolume() {
@@ -53,7 +53,7 @@ function Audio() {
         //-127 so that silence is 0
         volume = (Math.sqrt(volume) - 127) * 2;
         // to display in UI
-        setVolumeValue(volume);
+        setVolumeValue(volume.toFixed(2));
       }
 
       function update() {
@@ -67,33 +67,16 @@ function Audio() {
   }, []);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        borderStyle: "solid",
-        borderColor: "white",
-        borderWidth: 1,
-      }}
-    >
-      <StyledInfo>
-        {volumeValue ? "volume: " + parseFloat(volumeValue).toFixed(2) : 0}
-      </StyledInfo>
-
-      <StyledInfo>
-        {frequencyValue
-          ? "frequency: " + parseFloat(frequencyValue).toFixed(2)
-          : 0}
-      </StyledInfo>
-    </div>
+    <AudioContainer>
+      <Title>Audio Display</Title>
+      <Info>
+        {volumeValue ? "volume: " + parseFloat(volume).toFixed(2) : 0}
+      </Info>
+      <Info>
+        {frequencyValue ? "frequency: " + parseFloat(frequency).toFixed(2) : 0}
+      </Info>
+    </AudioContainer>
   );
 }
 
-export {
-  //Audio component for App.js
-  Audio,
-  //frequency value for Three.js
-  frequency,
-  //volume value for Three.js
-  volume,
-};
+export { Audio as default, frequency, volume };

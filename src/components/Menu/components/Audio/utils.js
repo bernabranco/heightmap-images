@@ -1,24 +1,18 @@
-import { preset } from "../../presets/choosePreset";
-import { changeImage } from "../Image/ImageChangeOnClick";
-const traits = require(`../../presets/${preset}`);
+import { changeImage } from "../../../Image/ImageChangeOnClick";
 
-const LIST_SIZE = traits.image_list_size;
-
-// switch images based on volume
 export const switchImageBasedOnAudioVolume = (
-  frequency,
+  intensity,
   volume,
   imagesData,
   positions,
   colors,
   meshes
 ) => {
-  if (volume >= frequency) {
+  if (volume >= intensity) {
     changeImage(imagesData, positions, colors, meshes);
   }
 };
 
-// amplify particle size based on volume
 export const changeParticleSizeBasedOnAudioVolume = (
   volume,
   particleSize,

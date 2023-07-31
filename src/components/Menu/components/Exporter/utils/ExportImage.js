@@ -1,4 +1,3 @@
-// Export single image
 export function exportImage(frameCount) {
   var canvas = document.getElementById("canvasExport");
   var dataURL = canvas.toDataURL("image/jpeg");
