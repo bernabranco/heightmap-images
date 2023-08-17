@@ -14,15 +14,15 @@ const vertexShader = `
     return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
   }
 
-  vec3 applyPhysics(vec3 newPosition, vec3 acc){
+  vec3 applyPhysics(vec3 newPosition, float time, vec3 acc){
     float speed = u_speed*u_time;
-    newPosition.x += u_noise_x*sin(speed*u_amplitude_x - u_speed*u_time);
-    newPosition.y += u_noise_y*sin(speed*u_amplitude_y -  u_speed*u_time);
-    newPosition.z += u_noise_z*sin(speed*u_amplitude_z - u_speed*u_time);
+    newPosition.x += u_noise_x*sin(speed*u_amplitude_x - time);
+    newPosition.y += u_noise_y*sin(speed*u_amplitude_y -  time);
+    newPosition.z += u_noise_z*sin(speed*u_amplitude_z - time);
     return newPosition;
   }
 
-  vec3 applyOffset(vec3 newPosition, float sound){
+  vec3 applyOffset(vec3 newPosition, float time, float sound){
     if(sound > 0.0 ) {
       newPosition.x *= u_offset_x + sound;
       newPosition.y *= u_offset_y + sound;
@@ -89,12 +89,11 @@ const vertexShader = `
     float time = u_time * u_speed;
 
     // apply position effects
-    // vertexPosition.xyz = applyPhysics(vertexPosition, acc);
-    vertexPosition.xyz =  applyPerlinNoise(vertexPosition);
+    vertexPosition.xyz = applyPhysics(vertexPosition, time, acc);
+    vertexPosition.xyz = applyOffset(vertexPosition, time, sound);
+    // vertexPosition.xyz =  applyPerlinNoise(vertexPosition);
     // vertexPosition.xyz =  applySinCos1(vertexPosition);
-    vertexPosition.xyz = applyOffset(vertexPosition, sound);
- 
-
+    
     // position points
     vec4 mvPosition = modelViewMatrix * vec4(vertexPosition, 1.0);
 

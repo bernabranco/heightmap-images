@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useImageContext } from "../../store/ImageContext";
 import * as THREE from "three";
 
-import * as traits from "../../presets/basic.js";
+import * as traits from "../../presets/horizontal.js";
 import { createGrid } from "../Image/ImageSetup";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
@@ -156,7 +156,7 @@ const Threejs = () => {
       mesh.rotation.y += gui.params.rotationY;
       mesh.rotation.z += gui.params.rotationZ;
 
-      if (volume > 2) {
+      if (volume * gui.params.soundIntensity > 1.5) {
         changeImage(imagesData, uploadedImages.length, positions, colors, mesh);
       }
 
