@@ -1,5 +1,4 @@
-import { preset } from "../../presets/choosePreset";
-const traits = require(`../../presets/${preset}`);
+import { preset } from "../../presets/preset";
 
 export const updateMeshGeometryProperties = (
   selectedImage,
@@ -36,8 +35,9 @@ export function changeVideoFrames(
 
 // switch vertex colors to next frames
 export function changeImageFrames(imagesData, positions, colors, mesh) {
+  // TODO: correct preset.image_list_size
   let selectedImage =
-    imagesData[parseInt(Math.random() * traits.image_list_size)].data;
+    imagesData[parseInt(Math.random() * preset.image_list_size)].data;
   let colorIndex = 0;
   let positionIndex = 0;
   for (let i = 0; i < colors.length; i++) {

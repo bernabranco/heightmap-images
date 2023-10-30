@@ -1,15 +1,17 @@
-import { preset } from "../../presets/choosePreset";
-const traits = require(`../../presets/${preset}`);
+import { preset } from "../../presets/preset";
 
-const imgWidth = Math.pow(traits.vertex_number, 0.5);
-const imgHeight = Math.pow(traits.vertex_number, 0.5);
+const imgWidth = Math.pow(preset.core.particleCount, 0.5);
+const imgHeight = Math.pow(preset.core.particleCount, 0.5);
 
 // create 2D grid based on the color of the first image of the list
 export function createGrid(imagesData, positions, colors, sizes, acc) {
   let j = 0;
+
+  console.log({ imagesData: imagesData });
+
   const imageData = imagesData[0];
 
-  console.log(imagesData);
+  console.log({ imageData: imageData });
 
   for (let x = 0; x < imgWidth; x++) {
     for (let y = 0; y < imgHeight; y++) {
@@ -24,8 +26,8 @@ export function createGrid(imagesData, positions, colors, sizes, acc) {
 
       //define particle position
       positions.push(
-        x * traits.vertex_offset_x - imgWidth * 0.5 * traits.vertex_offset_x,
-        y * traits.vertex_offset_y - imgHeight * 0.5 * traits.vertex_offset_y,
+        (x - imgWidth * 0.5) * preset.position.offsetX,
+        (y - imgHeight * 0.5) * preset.position.offsetY,
         1.0 + (r + g + b)
       );
 

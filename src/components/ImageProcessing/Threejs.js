@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useImageContext } from "../../store/ImageContext";
 import * as THREE from "three";
 
-import * as traits from "../../presets/horizontal.js";
+import { preset } from "../../presets/preset";
 import { createGrid } from "../Image/ImageSetup";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
@@ -34,8 +34,14 @@ const Threejs = () => {
   const { imagesData, uploadedImages } = useImageContext();
   const canvasRef = useRef();
 
+  console.log("44444");
+  console.log(imagesData);
+
   useEffect(() => {
     if (imagesData.length === 0) return; // Wait for the imagesData to be available
+
+    console.log("555555");
+    console.log(imagesData);
 
     const zoom = 900;
     const width = window.innerWidth;
@@ -47,10 +53,10 @@ const Threejs = () => {
 
     // Setup Camera
     const camera = new THREE.PerspectiveCamera(
-      traits.camera_fov,
+      preset.camera.fov,
       width / height,
-      traits.camera_near,
-      traits.camera_far
+      preset.camera.near,
+      preset.camera.far
     );
     camera.aspect = width / height;
     camera.position.z = zoom;
@@ -74,6 +80,10 @@ const Threejs = () => {
 
     createGrid(imagesData, positions, colors, sizes, acc);
 
+    console.log({ vertex_positions: positions });
+
+    console.log({ vertex_colors: colors });
+
     const geometry = three_geometry.createBufferGeometry(
       positions,
       colors,
@@ -93,9 +103,9 @@ const Threejs = () => {
     mesh.position.y = 0;
     mesh.position.z = 0;
 
-    mesh.rotation.x = traits.initial_mesh_rotation_x;
-    mesh.rotation.y = traits.initial_mesh_rotation_y;
-    mesh.rotation.z = traits.initial_mesh_rotation_z;
+    mesh.rotation.x = preset.movement.rotationX;
+    mesh.rotation.y = preset.movement.rotationY;
+    mesh.rotation.z = -Math.PI / 2;
 
     // setup scene
     scene.add(mesh);
@@ -190,7 +200,7 @@ const Threejs = () => {
       material.dispose();
       renderer.dispose();
     };
-  }, []);
+  }, [imagesData, uploadedImages.length]);
 
   return <div ref={canvasRef} />;
 };

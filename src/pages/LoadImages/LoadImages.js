@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router";
 import ImageUploadComponent from "../../components/ImageUpload/ImageUpload";
 import { useImageContext } from "../../store/ImageContext";

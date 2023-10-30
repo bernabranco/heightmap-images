@@ -1,10 +1,5 @@
 import * as imageManipulate from "./ImageManipulate";
 
-import { preset } from "../../presets/choosePreset";
-const traits = require(`../../presets/${preset}`);
-
-const LIST_SIZE = traits.image_list_size;
-
 export function changeImageWithClick(e, imagesData, positions, colors, meshes) {
   console.log("change image with click");
   let selectedImage;

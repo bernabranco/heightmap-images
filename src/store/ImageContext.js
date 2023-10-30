@@ -2,11 +2,10 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { createImageObjects, getImagesData } from "./utils";
 
-import { preset } from "../presets/choosePreset";
-const traits = require(`../presets/${preset}`);
+import { preset } from "../presets/preset";
 
-const imgWidth = Math.pow(traits.vertex_number, 0.5);
-const imgHeight = Math.pow(traits.vertex_number, 0.5);
+const imgWidth = Math.pow(preset.core.particleCount, 0.5);
+const imgHeight = Math.pow(preset.core.particleCount, 0.5);
 
 const ImageContext = createContext();
 
@@ -23,6 +22,9 @@ const ImageProvider = ({ children }) => {
   useEffect(() => {
     const updateImagesData = async () => {
       const newImagesData = await getImagesData(imageList, imgWidth, imgHeight);
+
+      console.log({ newImagesData: newImagesData });
+
       setImagesData(newImagesData);
 
       if (uploadedImages.length > 0) {

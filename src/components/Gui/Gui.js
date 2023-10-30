@@ -1,39 +1,41 @@
 import { GUI } from "dat.gui";
-import * as traits from "../../presets/horizontal";
+import { preset } from "../../presets/preset";
+
+console.log({ gui_preset: preset });
 
 export const params = {
   animate: true, // core
-  particleCount: traits.vertex_number,
-  particleSize: traits.vertex_size,
-  particleSpeed: traits.vertex_speed,
+  particleCount: preset.core.particleCount,
+  particleSize: preset.core.particleSize,
+  particleSpeed: preset.core.particleSpeed,
 
-  offsetX: traits.vertex_offset_x, // position
-  offsetY: traits.vertex_offset_y,
-  offsetZ: traits.vertex_offset_z,
+  offsetX: preset.position.offsetX, // position
+  offsetY: preset.position.offsetY,
+  offsetZ: preset.position.offsetZ,
 
-  noiseX: traits.vertex_noise_x, // movement
-  noiseY: traits.vertex_noise_y,
-  noiseZ: traits.vertex_noise_z,
-  amplitudeX: traits.vertex_amplitude_x,
-  amplitudeY: traits.vertex_amplitude_y,
-  amplitudeZ: traits.vertex_amplitude_z,
-  rotationX: 0,
-  rotationY: 0,
-  rotationZ: 0,
+  noiseX: preset.movement.noiseX, // movement
+  noiseY: preset.movement.noiseY,
+  noiseZ: preset.movement.noiseZ,
+  amplitudeX: preset.movement.amplitudeX,
+  amplitudeY: preset.movement.amplitudeY,
+  amplitudeZ: preset.movement.amplitudeZ,
+  rotationX: preset.movement.rotationX,
+  rotationY: preset.movement.rotationY,
+  rotationZ: preset.movement.rotationZ,
 
-  enableComposer: traits.scene_enable_composer, // post processing
-  exposure: traits.vertex_drag,
-  bloomStrength: traits.vertex_bloom_strength,
-  bloomThreshold: traits.vertex_bloom_threshold,
-  bloomRadius: traits.vertex_bloom_radius,
+  enableComposer: preset.postProcessing.enableComposer, // post processing
+  exposure: preset.postProcessing.exposure,
+  bloomStrength: preset.postProcessing.bloomStrength,
+  bloomThreshold: preset.postProcessing.bloomThreshold,
+  bloomRadius: preset.postProcessing.bloomRadius,
 
-  backgroundColor: traits.scene_background_color, // color
-  colorContrast: traits.vertex_contrast,
-  vertexRed: traits.vertex_red,
-  vertexGreen: traits.vertex_green,
-  vertexBlue: traits.vertex_blue,
+  backgroundColor: preset.color.backgroundColor, // color
+  colorContrast: preset.color.colorContrast,
+  vertexRed: preset.color.vertexRed,
+  vertexGreen: preset.color.vertexGreen,
+  vertexBlue: preset.color.vertexBlue,
 
-  soundIntensity: traits.vertex_sound_intensity, // sound
+  soundIntensity: preset.sound.soundIntensity, // sound
 
   // cameraX: 0, // camera
   // cameraY: 0,
@@ -62,7 +64,7 @@ export function createGUI(
   coreProperties
     .add(params, "particleCount")
     .min(0)
-    .max(traits.vertex_number)
+    .max(preset.core.particleCount)
     .step(1)
     .onChange(
       () => {

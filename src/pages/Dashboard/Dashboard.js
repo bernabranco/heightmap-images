@@ -1,6 +1,5 @@
-import { React, useEffect } from "react";
+import { React, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { Audio } from "../../components/Menu/components/Audio/Audio";
 import Threejs from "../../components/ImageProcessing/Threejs";
 import Menu from "../../components/Menu/Menu";
 import { useImageContext } from "../../store/ImageContext";
@@ -10,15 +9,17 @@ export default function Dashboard() {
 
   const navigate = useNavigate();
 
-  const goToStartScreen = () => {
+  const goToStartScreen = useCallback(() => {
     navigate("/");
-  };
+  }, [navigate]);
 
   useEffect(() => {
     if (uploadedImages.length === 0) {
       goToStartScreen();
     }
-  }, [uploadedImages]);
+
+    console.log({ uploadedImages: uploadedImages });
+  }, [uploadedImages, goToStartScreen]);
 
   return (
     <>

@@ -3,8 +3,6 @@ import * as THREE from "three";
 export function createBufferGeometry(positions, colors, sizes, acc) {
   console.log("create buffer geometry");
 
-  console.log(positions);
-
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute(
     "position",
