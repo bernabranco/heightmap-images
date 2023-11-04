@@ -2,7 +2,13 @@ import * as gui from "../../../../Gui/Gui";
 
 const getPresetProperties = () => {
   return `
-export const preset = {
+To save your new preset:
+- Create a file inside presets folder (ex: preset1.js)
+- Copy object bellow
+- Paste it in the newly created file
+- Change import inside preset.js to use new preset
+
+export const traits = {
   core: {
     animate: ${gui.params.animate},
     particleCount: ${gui.params.particleCount},

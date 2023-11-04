@@ -1,7 +1,6 @@
 import * as imageManipulate from "./ImageManipulate";
 
 export function changeImageWithClick(e, imagesData, positions, colors, meshes) {
-  console.log("change image with click");
   let selectedImage;
   for (let i = 0; i <= imagesData.length; i++) {
     if (e.target.id === `image${i}`) {
@@ -9,7 +8,7 @@ export function changeImageWithClick(e, imagesData, positions, colors, meshes) {
     }
   }
 
-  console.log("enter update mesh geometry properties");
+  console.log("ImageChangeOnClick.js - Update mesh geometry properties");
   imageManipulate.updateMeshGeometryProperties(
     selectedImage,
     positions,
@@ -43,6 +42,8 @@ export function changeImageOnClick(
   colors,
   meshes
 ) {
+  console.log("ImageChangeOnClick.js - Change image with click");
+
   for (let i = 0; i < imagesLength; i++) {
     const image = document.getElementById(`image${i}`);
     image.onclick = (e) =>

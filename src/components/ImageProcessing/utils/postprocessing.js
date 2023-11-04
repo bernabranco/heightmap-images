@@ -4,12 +4,12 @@ import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPa
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 
-export function processingSetup(
+export function setupPostProcessing(
   renderer,
   scene,
   camera,
   afterimagePass,
-  bloomPass,
+  bloomPass
 ) {
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));

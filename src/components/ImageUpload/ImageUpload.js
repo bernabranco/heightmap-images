@@ -14,7 +14,11 @@ import {
 const ImageUploadComponent = () => {
   const { uploadedImages, setUploadedImages } = useContext(ImageContext);
 
+  console.log("ImageUpload.js - Setup Dropbox");
+
   const onDrop = (acceptedFiles) => {
+    console.log("ImageUpload.js - Files Dropped");
+
     const images = acceptedFiles.map((file) => ({
       file,
       preview: URL.createObjectURL(file),
@@ -25,7 +29,7 @@ const ImageUploadComponent = () => {
   return (
     <ImageUploadContainer>
       <Title>Welcome to After Image</Title>
-      <Dropzone onDrop={onDrop} accept="image/*" multiple>
+      <Dropzone onDrop={onDrop} multiple>
         {({ getRootProps, getInputProps }) => (
           <DropzoneContainer {...getRootProps()}>
             <input {...getInputProps()} />

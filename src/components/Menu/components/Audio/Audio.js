@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AudioContainer, Info, Title } from "./Audio.styles";
 
 let frequency;
@@ -7,7 +7,10 @@ let volume;
 function Audio() {
   const [volumeValue, setVolumeValue] = useState("");
   const [frequencyValue, setFrequencyValue] = useState("");
+
   useEffect(() => {
+    let isMounted = true; // Flag to track whether the component is mounted
+
     navigator.getUserMedia =
       navigator.getUserMedia ||
       navigator.webkitGetUserMedia ||
@@ -29,40 +32,52 @@ function Audio() {
       var buffer = new Uint8Array(analyser.fftSize);
 
       function analyzeFrequency() {
-        analyser.getByteFrequencyData(data);
-        var idx = 0;
-        for (var j = 0; j < analyser.frequencyBinCount; j++) {
-          if (data[j] > data[idx]) {
-            idx = j;
+        if (isMounted) {
+          analyser.getByteFrequencyData(data);
+          var idx = 0;
+          for (var j = 0; j < analyser.frequencyBinCount; j++) {
+            if (data[j] > data[idx]) {
+              idx = j;
+            }
           }
-        }
 
-        frequency = (idx * ctx.sampleRate) / analyser.fftSize;
-        // to display in UI
-        setFrequencyValue(frequency.toFixed(2));
+          frequency = (idx * ctx.sampleRate) / analyser.fftSize;
+          // to display in UI
+          setFrequencyValue(frequency.toFixed(2));
+        }
       }
 
       function analyzeVolume() {
-        analyser.getByteTimeDomainData(buffer);
-        volume = 0;
-        for (var i = 0; i < buffer.length; i++) {
-          volume += buffer[i] * buffer[i];
-        }
+        if (isMounted) {
+          analyser.getByteTimeDomainData(buffer);
+          volume = 0;
+          for (var i = 0; i < buffer.length; i++) {
+            volume += buffer[i] * buffer[i];
+          }
 
-        volume /= buffer.length;
-        //-127 so that silence is 0
-        volume = (Math.sqrt(volume) - 127) * 2;
-        // to display in UI
-        setVolumeValue(volume.toFixed(2));
+          volume /= buffer.length;
+          //-127 so that silence is 0
+          volume = (Math.sqrt(volume) - 127) * 2;
+          // to display in UI
+          setVolumeValue(volume.toFixed(2));
+        }
       }
 
       function update() {
-        analyzeFrequency();
-        analyzeVolume();
-        requestAnimationFrame(update);
+        if (isMounted) {
+          analyzeFrequency();
+          analyzeVolume();
+          requestAnimationFrame(update);
+        }
       }
 
       update();
+
+      return () => {
+        isMounted = false; // Set the flag to indicate that the component is unmounted
+        ctx.close().catch(console.error); // Close the AudioContext
+        stream.getTracks().forEach((track) => track.stop()); // Stop all tracks in the audio stream
+      };
     }
   }, []);
 

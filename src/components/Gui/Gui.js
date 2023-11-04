@@ -1,6 +1,7 @@
 import { GUI } from "dat.gui";
 import { preset } from "../../presets/preset";
 
+console.log("Gui.js - Load preset to GUI params");
 console.log({ gui_preset: preset });
 
 export const params = {

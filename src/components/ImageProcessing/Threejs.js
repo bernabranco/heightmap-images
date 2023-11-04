@@ -34,14 +34,14 @@ const Threejs = () => {
   const { imagesData, uploadedImages } = useImageContext();
   const canvasRef = useRef();
 
-  console.log("44444");
+  console.log("Threejs.js - Images Data:");
+
   console.log(imagesData);
 
   useEffect(() => {
     if (imagesData.length === 0) return; // Wait for the imagesData to be available
 
-    console.log("555555");
-    console.log(imagesData);
+    console.log("Threejs.js - Start Scene");
 
     const zoom = 900;
     const width = window.innerWidth;
@@ -80,6 +80,8 @@ const Threejs = () => {
 
     createGrid(imagesData, positions, colors, sizes, acc);
 
+    console.log("Threejs.js - Vertexes");
+
     console.log({ vertex_positions: positions });
 
     console.log({ vertex_colors: colors });
@@ -91,10 +93,14 @@ const Threejs = () => {
       acc
     );
 
+    console.log({ geometry: geometry });
+
     const material = three_material.createCustomMaterial(
       vertexShader1,
       fragmentShader1
     );
+
+    console.log({ material: material });
 
     // Setup Mesh
     const mesh = new THREE.Points(geometry, material);
@@ -106,6 +112,8 @@ const Threejs = () => {
     mesh.rotation.x = preset.movement.rotationX;
     mesh.rotation.y = preset.movement.rotationY;
     mesh.rotation.z = -Math.PI / 2;
+
+    console.log({ mesh: mesh });
 
     // setup scene
     scene.add(mesh);
@@ -121,7 +129,7 @@ const Threejs = () => {
     // Setup Post Processing
     const afterimagePass = three_post_processing.afterImageEffect();
     const bloomPass = three_post_processing.glowEffect(gui.params);
-    const composer = three_post_processing.processingSetup(
+    const composer = three_post_processing.setupPostProcessing(
       renderer,
       scene,
       camera,
@@ -191,10 +199,14 @@ const Threejs = () => {
     let frameCount = -1;
     render();
 
+    console.log("Threejs.js - Create GUI");
+
     gui.createGUI(gui.params, geometry, scene, bloomPass, render, renderer);
 
     // Clean up
     return () => {
+      console.log("Threejs.js - Cleanup scene");
+
       scene.remove(mesh);
       geometry.dispose();
       material.dispose();

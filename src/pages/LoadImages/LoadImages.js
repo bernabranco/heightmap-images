@@ -13,6 +13,8 @@ const LoadImages = () => {
 
   const { imageLoading } = useImageContext();
 
+  console.log("LoadImages.j - Loading Images After Drop");
+
   console.log(imageLoading);
 
   return (

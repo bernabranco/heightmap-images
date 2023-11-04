@@ -23,6 +23,8 @@ const ImageProvider = ({ children }) => {
     const updateImagesData = async () => {
       const newImagesData = await getImagesData(imageList, imgWidth, imgHeight);
 
+      console.log("ImageContext.js - New Images Data:");
+
       console.log({ newImagesData: newImagesData });
 
       setImagesData(newImagesData);

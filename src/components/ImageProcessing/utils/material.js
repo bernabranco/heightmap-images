@@ -31,6 +31,8 @@ export const uniforms = {
 };
 
 export function createCustomMaterial(vertexShader, fragmentShader) {
+  console.log("material.js - Create Custom Material");
+
   const material = new THREE.ShaderMaterial({
     uniforms: uniforms,
     vertexShader: vertexShader,
@@ -41,5 +43,8 @@ export function createCustomMaterial(vertexShader, fragmentShader) {
     alphaTest: false,
     vertexColors: true,
   });
+
+  console.log({material: material});
+
   return material;
 }
