@@ -24,26 +24,28 @@ import * as three_geometry from "./utils/geometry";
 
 import { volume } from "../Menu/components/Audio/Audio";
 
-import { updateUniformsBasedOnGui } from "./utils/updateUniforms";
+import {
+  updateUniformsBasedOnGui,
+  updateUniformsBasedOnPosenet,
+  updateUniformsBasedOnVolume,
+} from "./utils/updateUniforms";
 
-import { updateUniformsBasedOnVolume } from "./utils/updateUniforms";
 import { changeImage, changeImageOnClick } from "../Image/ImageChangeOnClick";
 import { changeImageOnKeyDown } from "../Image/ImageChangeOnKeyDown";
 
+import { usePosenetContext } from "../../store/PosenetContext";
+import { debugThreejs } from "../../debugger/debugger";
+
 const Threejs = () => {
   const { imagesData, uploadedImages } = useImageContext();
+
+  const { posenetValues } = usePosenetContext();
+
   const canvasRef = useRef();
-
-  console.log("Threejs.js - Images Data:");
-
-  console.log(imagesData);
 
   useEffect(() => {
     if (imagesData.length === 0) return; // Wait for the imagesData to be available
 
-    console.log("Threejs.js - Start Scene");
-
-    const zoom = 900;
     const width = window.innerWidth;
     const height = window.innerHeight;
 
@@ -80,12 +82,6 @@ const Threejs = () => {
 
     createGrid(imagesData, positions, colors, sizes, acc);
 
-    console.log("Threejs.js - Vertexes");
-
-    console.log({ vertex_positions: positions });
-
-    console.log({ vertex_colors: colors });
-
     const geometry = three_geometry.createBufferGeometry(
       positions,
       colors,
@@ -93,14 +89,10 @@ const Threejs = () => {
       acc
     );
 
-    console.log({ geometry: geometry });
-
     const material = three_material.createCustomMaterial(
       vertexShader1,
       fragmentShader1
     );
-
-    console.log({ material: material });
 
     // Setup Mesh
     const mesh = new THREE.Points(geometry, material);
@@ -113,8 +105,6 @@ const Threejs = () => {
     mesh.rotation.y = preset.movement.rotationY;
     mesh.rotation.z = -Math.PI / 2;
 
-    console.log({ mesh: mesh });
-
     // setup scene
     scene.add(mesh);
 
@@ -125,8 +115,6 @@ const Threejs = () => {
 
     // Setup Orbit Controls
     const controls = new OrbitControls(camera, canvas);
-
-    console.log({ controls: controls });
 
     // Setup Post Processing
     const afterimagePass = three_post_processing.afterImageEffect();
@@ -168,9 +156,13 @@ const Threejs = () => {
       mesh.geometry.attributes.color.needsUpdate = true;
       mesh.geometry.attributes.size.needsUpdate = true;
 
-      // Update uniforms based on GUI and audio volume
+      // Update uniforms based on GUI, posenet and audio volume
       updateUniformsBasedOnGui(material, gui, frameCount, volume);
       updateUniformsBasedOnVolume(material, gui, frameCount, volume);
+
+      if (posenetValues) {
+        updateUniformsBasedOnPosenet(material, posenetValues);
+      }
 
       mesh.rotation.x += gui.params.rotationX;
       mesh.rotation.y += gui.params.rotationY;
@@ -201,8 +193,6 @@ const Threejs = () => {
     let frameCount = -1;
     render();
 
-    console.log("Threejs.js - Create GUI");
-
     gui.createGUI(gui.params, geometry, scene, bloomPass, render, renderer);
 
     // Clean up
@@ -213,6 +203,16 @@ const Threejs = () => {
       geometry.dispose();
       material.dispose();
       renderer.dispose();
+
+      debugThreejs(
+        imagesData,
+        positions,
+        colors,
+        geometry,
+        material,
+        mesh,
+        posenetValues
+      );
     };
   }, [imagesData, uploadedImages.length]);
 

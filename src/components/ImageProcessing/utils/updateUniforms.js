@@ -36,3 +36,9 @@ export const updateUniformsBasedOnVolume = (
     material.uniforms.u_speed.value *= parseFloat(volume);
   }
 };
+
+export const updateUniformsBasedOnPosenet = (material, posenetValues) => {
+  console.log('updateUniforms.js - Update uniforms based on Posenet')
+  material.uniforms.u_offset_z.value *= posenetValues.rightHand.x;
+  // material.uniforms.u_offset_y.value += posenetValues;
+};
