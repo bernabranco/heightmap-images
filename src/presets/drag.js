@@ -1,7 +1,7 @@
 export const traits = {
   core: {
     animate: true,
-    particleCount: 65536,
+    particleCount: Math.pow(2, 16),
     particleSize: 37.62,
     particleSpeed: 5.747,
   },

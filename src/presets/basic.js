@@ -1,8 +1,8 @@
 export const traits = {
   core: {
-    animate: false,
-    particleCount: Math.pow(2, 16),
-    particleSize: 5,
+    animate: true,
+    particleCount: Math.pow(2, 20),
+    particleSize: 10,
     particleSpeed: 1,
   },
   position: {
@@ -36,12 +36,12 @@ export const traits = {
     vertexBlue: 1,
   },
   sound: {
-    soundIntensity: 1,
+    soundIntensity: 0,
   },
   camera: {
     fov: 50,
     near: 1,
     far: 100000,
-    zoom: 900,
+    zoom: 500,
   },
 };

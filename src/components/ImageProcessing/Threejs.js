@@ -59,7 +59,7 @@ const Threejs = () => {
       preset.camera.far
     );
     camera.aspect = width / height;
-    camera.position.z = zoom;
+    camera.position.z = preset.camera.zoom;
 
     // Setup Renderer
     const renderer = new THREE.WebGLRenderer({
@@ -125,6 +125,8 @@ const Threejs = () => {
 
     // Setup Orbit Controls
     const controls = new OrbitControls(camera, canvas);
+
+    console.log({ controls: controls });
 
     // Setup Post Processing
     const afterimagePass = three_post_processing.afterImageEffect();

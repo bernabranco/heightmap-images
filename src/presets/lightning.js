@@ -1,7 +1,7 @@
 export const traits = {
   core: {
     animate: true,
-    particleCount: 65536,
+    particleCount: Math.pow(2, 16),
     particleSize: 1,
     particleSpeed: 1,
   },
@@ -11,9 +11,9 @@ export const traits = {
     offsetZ: 68.97,
   },
   movement: {
-    noiseX: 100,
-    noiseY: 100,
-    noiseZ: 813.089,
+    noiseX: 0,
+    noiseY: 0,
+    noiseZ: 0,
     amplitudeX: 0,
     amplitudeY: 0,
     amplitudeZ: 0,
@@ -23,25 +23,25 @@ export const traits = {
   },
   postProcessing: {
     enableComposer: true,
-    exposure: 0.865,
-    bloomStrength: 10,
+    exposure: 0,
+    bloomStrength: 0,
     bloomThreshold: 0,
     bloomRadius: 0,
   },
   color: {
     backgroundColor: "#000000",
-    colorContrast: 1.346,
+    colorContrast: 1,
     vertexRed: 1,
     vertexGreen: 1,
     vertexBlue: 1,
   },
   sound: {
-    soundIntensity: 100,
+    soundIntensity: 1,
   },
   camera: {
     fov: 50,
     near: 1,
     far: 100000,
-    zoom: 900,
+    zoom: 1500,
   },
 };
