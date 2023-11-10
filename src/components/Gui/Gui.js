@@ -1,20 +1,19 @@
 import { GUI } from "dat.gui";
 import { preset } from "../../presets/preset";
 
-console.log("Gui.js - Load preset to GUI params");
 console.log({ gui_preset: preset });
 
 export const params = {
-  animate: true, // core
+  animate: true,
   particleCount: preset.core.particleCount,
   particleSize: preset.core.particleSize,
   particleSpeed: preset.core.particleSpeed,
 
-  offsetX: preset.position.offsetX, // position
+  offsetX: preset.position.offsetX,
   offsetY: preset.position.offsetY,
   offsetZ: preset.position.offsetZ,
 
-  noiseX: preset.movement.noiseX, // movement
+  noiseX: preset.movement.noiseX,
   noiseY: preset.movement.noiseY,
   noiseZ: preset.movement.noiseZ,
   amplitudeX: preset.movement.amplitudeX,
@@ -24,19 +23,19 @@ export const params = {
   rotationY: preset.movement.rotationY,
   rotationZ: preset.movement.rotationZ,
 
-  enableComposer: preset.postProcessing.enableComposer, // post processing
+  enableComposer: preset.postProcessing.enableComposer,
   exposure: preset.postProcessing.exposure,
   bloomStrength: preset.postProcessing.bloomStrength,
   bloomThreshold: preset.postProcessing.bloomThreshold,
   bloomRadius: preset.postProcessing.bloomRadius,
 
-  backgroundColor: preset.color.backgroundColor, // color
+  backgroundColor: preset.color.backgroundColor,
   colorContrast: preset.color.colorContrast,
   vertexRed: preset.color.vertexRed,
   vertexGreen: preset.color.vertexGreen,
   vertexBlue: preset.color.vertexBlue,
 
-  soundIntensity: preset.sound.soundIntensity, // sound
+  soundIntensity: preset.sound.soundIntensity,
 
   // cameraX: 0, // camera
   // cameraY: 0,
@@ -54,7 +53,6 @@ export function createGUI(
   animate,
   renderer
 ) {
-  // Create gui for particle manipulation
   const gui = new GUI({ name: "Control Station" });
 
   const coreProperties = gui.addFolder("Core");
@@ -91,12 +89,24 @@ export function createGUI(
   positionProperties.add(params, "offsetZ").min(-1000).max(1000).step(0.01);
 
   const movementProperties = gui.addFolder("Movement");
-  movementProperties.add(params, "noiseX").min(-1000).max(1000).step(0.001);
-  movementProperties.add(params, "noiseY").min(-1000).max(1000).step(0.001);
-  movementProperties.add(params, "noiseZ").min(-1000).max(1000).step(0.001);
-  movementProperties.add(params, "amplitudeX").min(-100).max(100).step(0.001);
-  movementProperties.add(params, "amplitudeY").min(-100).max(100).step(0.001);
-  movementProperties.add(params, "amplitudeZ").min(-100).max(100).step(0.001);
+  movementProperties.add(params, "noiseX").min(-100000).max(100000).step(0.001);
+  movementProperties.add(params, "noiseY").min(-100000).max(100000).step(0.001);
+  movementProperties.add(params, "noiseZ").min(-100000).max(100000).step(0.001);
+  movementProperties
+    .add(params, "amplitudeX")
+    .min(-10000)
+    .max(10000)
+    .step(0.001);
+  movementProperties
+    .add(params, "amplitudeY")
+    .min(-10000)
+    .max(10000)
+    .step(0.001);
+  movementProperties
+    .add(params, "amplitudeZ")
+    .min(-10000)
+    .max(10000)
+    .step(0.001);
   movementProperties.add(params, "rotationX").min(-0.1).max(0.1).step(0.001);
   movementProperties.add(params, "rotationY").min(-0.1).max(0.1).step(0.001);
   movementProperties.add(params, "rotationZ").min(-0.1).max(0.1).step(0.001);

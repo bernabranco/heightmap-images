@@ -8,7 +8,6 @@ export function changeImageWithClick(e, imagesData, positions, colors, meshes) {
     }
   }
 
-  console.log("ImageChangeOnClick.js - Update mesh geometry properties");
   imageManipulate.updateMeshGeometryProperties(
     selectedImage,
     positions,
@@ -34,7 +33,6 @@ export function changeImage(
   );
 }
 
-// change image by clicking on it
 export function changeImageOnClick(
   imagesData,
   imagesLength,
@@ -42,8 +40,6 @@ export function changeImageOnClick(
   colors,
   meshes
 ) {
-  console.log("ImageChangeOnClick.js - Change image with click");
-
   for (let i = 0; i < imagesLength; i++) {
     const image = document.getElementById(`image${i}`);
     image.onclick = (e) =>

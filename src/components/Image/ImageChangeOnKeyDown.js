@@ -1,6 +1,5 @@
 import * as imageManipulate from "./ImageManipulate";
 
-// change displayed images when key is pressed
 export const changeImageOnKeyDown = (
   imageId,
   imagesData,
@@ -9,7 +8,6 @@ export const changeImageOnKeyDown = (
   colors,
   mesh
 ) => {
-  console.log(imageId);
   document.onkeydown = function (e) {
     switch (e.key) {
       case "ArrowLeft":
@@ -54,8 +52,6 @@ export function changeImageOnPress(
   colors,
   mesh
 ) {
-  console.log("change image on press");
-  console.log(imageId);
   let selectedImage = imagesData[imageId].data;
   imageManipulate.updateMeshGeometryProperties(
     selectedImage,

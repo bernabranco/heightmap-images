@@ -11,8 +11,6 @@ export function createGrid(imagesData, positions, colors, sizes, acc) {
 
   const imageData = imagesData[0];
 
-  console.log({ imageData: imageData });
-
   for (let x = 0; x < imgWidth; x++) {
     for (let y = 0; y < imgHeight; y++) {
       //define particle color
@@ -28,7 +26,7 @@ export function createGrid(imagesData, positions, colors, sizes, acc) {
       positions.push(
         (x - imgWidth * 0.5) * preset.position.offsetX,
         (y - imgHeight * 0.5) * preset.position.offsetY,
-        1.0 + (r + g + b)
+        1.0 * (r + g + b)
       );
 
       // define particle acceleration
