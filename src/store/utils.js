@@ -1,6 +1,4 @@
 export const createImageObjects = (uploadedImages) => {
-  console.log("ImageContext utils.js - Create Image Objects");
-
   const imageObjects = uploadedImages.map((uploadedImage) => {
     const imageObject = new Image();
     imageObject.src = uploadedImage.preview;
@@ -12,8 +10,6 @@ export const createImageObjects = (uploadedImages) => {
 };
 
 export const getImagesData = async (imageList, imgWidth, imgHeight) => {
-  console.log("ImageContext utils.js - Get Images Data");
-
   const imagesData = [];
 
   const loadImageData = (image) => {
@@ -37,7 +33,7 @@ export const getImagesData = async (imageList, imgWidth, imgHeight) => {
   const loadedImagesData = await Promise.all(loadingPromises);
   imagesData.push(...loadedImagesData);
 
-  console.log("Images Data: ", imagesData);
+  console.log({ imagesData: imagesData });
 
   return imagesData;
 };

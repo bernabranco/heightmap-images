@@ -1,9 +1,13 @@
 import { attributes } from "../attributes.js";
 import { uniforms } from "../uniforms";
 import { curlNoise } from "../noise_functions/curlNoise";
+import { applyPhysics } from "./utils/vertexApplyPhysics.js";
+import { applyOffset } from "./utils/vertexApplyOffset.js";
+import { applyPerlinNoise } from "./utils/vertexApplyPerlinNoise.js";
 
 const vertexShader = `
   ${attributes}
+
   ${uniforms}
 
   varying vec3 vColor;
@@ -14,26 +18,9 @@ const vertexShader = `
     return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
   }
 
-  vec3 applyPhysics(vec3 newPosition, float time, vec3 acc){
-    float speed = u_speed*u_time;
-    newPosition.x += u_noise_x*sin(speed*u_amplitude_x - time);
-    newPosition.y += u_noise_y*sin(speed*u_amplitude_y -  time);
-    newPosition.z += u_noise_z*sin(speed*u_amplitude_z - time);
-    return newPosition;
-  }
+  ${applyPhysics}
 
-  vec3 applyOffset(vec3 newPosition, float time, float sound){
-    if(sound > 0.0 ) {
-      newPosition.x *= u_offset_x + sound;
-      newPosition.y *= u_offset_y + sound;
-      newPosition.z *= u_offset_z + sound;
-    } else {
-      newPosition.x *= u_offset_x;
-      newPosition.y *= u_offset_y;
-      newPosition.z *= u_offset_z;
-    }
-    return newPosition;
-  }
+  ${applyOffset}
 
   vec3 applyRandomPosition(vec3 newPosition){
     newPosition.x *= rand(vec2(u_offset_x*newPosition.x, u_offset_x*newPosition.x));
@@ -54,30 +41,19 @@ const vertexShader = `
     return newPosition;
   }
 
-  vec3 applyPerlinNoise(vec3 newPosition){
-    if(u_amplitude_x > 0.0){
-      newPosition.x *= snoise(newPosition.xyz*u_amplitude_x * u_time*u_speed);
-    }
-    if(u_amplitude_y > 0.0){
-      newPosition.y *= snoise(newPosition.xyz*u_amplitude_y * u_time*u_speed);
-    }
-    if(u_amplitude_z > 0.0){
-      newPosition.z *= snoise(newPosition.xyz*u_amplitude_z * u_time*u_speed);
-    }
-    return newPosition;
-  }
+  ${applyPerlinNoise}
 
-  vec3 applySinCos1(vec3 newPosition){
-    newPosition.x += sin(u_noise_x * newPosition.x + u_amplitude_x*u_time*u_speed);
-    newPosition.x += cos(u_noise_y * newPosition.y + u_amplitude_y*u_time*u_speed);
-    return newPosition;
-  }
+  // vec3 applySinCos1(vec3 newPosition){
+  //   newPosition.x += sin(u_noise_x * newPosition.x + u_amplitude_x*u_time*u_speed);
+  //   newPosition.x += cos(u_noise_y * newPosition.y + u_amplitude_y*u_time*u_speed);
+  //   return newPosition;
+  // }
 
-  vec3 applySinCos2(vec3 newPosition){
-    newPosition.x += sin(u_noise_x * newPosition.y + u_amplitude_x*u_time*u_speed);
-    newPosition.x += cos(u_noise_y * newPosition.x + u_amplitude_y*u_time*u_speed);
-    return newPosition;
-  }
+  // vec3 applySinCos2(vec3 newPosition){
+  //   newPosition.x += sin(u_noise_x * newPosition.y + u_amplitude_x*u_time*u_speed);
+  //   newPosition.x += cos(u_noise_y * newPosition.x + u_amplitude_y*u_time*u_speed);
+  //   return newPosition;
+  // }
     
   void main() {
     vColor = color;

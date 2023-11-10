@@ -29,16 +29,14 @@ export const updateUniformsBasedOnVolume = (
   material.uniforms.u_sound_intensity.value = gui.params.soundIntensity;
 
   if (gui.params.soundIntensity !== 0) {
-    //material.uniforms.u_size.value += parseFloat(volume);
-    material.uniforms.u_offset_x.value *= parseFloat(volume);
-    material.uniforms.u_offset_y.value *= parseFloat(volume);
-    material.uniforms.u_offset_z.value *= parseFloat(volume);
-    material.uniforms.u_speed.value *= parseFloat(volume);
+    // material.uniforms.u_size.value += parseFloat(volume);
+    material.uniforms.u_offset_x.value += parseFloat(volume);
+    material.uniforms.u_offset_y.value += parseFloat(volume);
+    material.uniforms.u_offset_z.value += parseFloat(volume);
+    // material.uniforms.u_speed.value = parseFloat(volume);
   }
 };
 
-export const updateUniformsBasedOnPosenet = (material, posenetValues) => {
-  console.log('updateUniforms.js - Update uniforms based on Posenet')
-  material.uniforms.u_offset_z.value *= posenetValues.rightHand.x;
-  // material.uniforms.u_offset_y.value += posenetValues;
+export const updateUniformsBasedOnPosenet = (posenetValues, material) => {
+  material.uniforms.u_offset_y.value += posenetValues.rightHand.x * 0.1;
 };

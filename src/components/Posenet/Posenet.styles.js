@@ -18,6 +18,8 @@ export const posenetContainer = {
 
 export const canvas = {
   position: "absolute",
+  left: 0,
+  top: 0,
 };
 
 export const video = {

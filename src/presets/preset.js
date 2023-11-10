@@ -1,3 +1,3 @@
-import { traits } from "./basic";
+import { traits } from "./horizontal";
 
 export const preset = traits;
