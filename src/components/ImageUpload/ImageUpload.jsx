@@ -14,11 +14,7 @@ import {
 const ImageUploadComponent = () => {
   const { uploadedImages, setUploadedImages } = useContext(ImageContext);
 
-  console.log("ImageUpload.js - Setup Dropbox");
-
   const onDrop = (acceptedFiles) => {
-    console.log("ImageUpload.js - Files Dropped");
-
     const images = acceptedFiles.map((file) => ({
       file,
       preview: URL.createObjectURL(file),

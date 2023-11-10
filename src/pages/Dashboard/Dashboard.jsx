@@ -18,8 +18,6 @@ export default function Dashboard() {
       goToStartScreen();
     }
 
-    console.log("Dashboard.js - Uploaded Images:");
-
     console.log({ uploadedImages: uploadedImages });
   }, [uploadedImages, goToStartScreen]);
 

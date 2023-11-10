@@ -13,7 +13,7 @@ export default function Menu() {
       <Audio />
       <Exporter />
       <Fullscreen />
-      <PoseNet />
+      {/* <PoseNet /> */}
     </MenuContainer>
   );
 }

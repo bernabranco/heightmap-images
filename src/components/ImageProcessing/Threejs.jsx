@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useImageContext } from "../../store/ImageContext";
 import * as THREE from "three";
 
@@ -7,13 +7,11 @@ import { createGrid } from "../Image/ImageSetup";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-// Import custom shaders
 import {
   vertexShader as vertexShader1,
   fragmentShader as fragmentShader1,
 } from "./glsl/shader1";
 
-// Import GUI and related utils
 import * as gui from "../Gui/Gui";
 
 import * as three_post_processing from "./utils/postprocessing";
@@ -24,6 +22,8 @@ import * as three_geometry from "./utils/geometry";
 
 import { volume } from "../Menu/components/Audio/Audio";
 
+import { usePosenetContext } from "../../store/PosenetContext";
+
 import {
   updateUniformsBasedOnGui,
   updateUniformsBasedOnPosenet,
@@ -33,15 +33,12 @@ import {
 import { changeImage, changeImageOnClick } from "../Image/ImageChangeOnClick";
 import { changeImageOnKeyDown } from "../Image/ImageChangeOnKeyDown";
 
-import { usePosenetContext } from "../../store/PosenetContext";
-import { debugThreejs } from "../../debugger/debugger";
-
 const Threejs = () => {
   const { imagesData, uploadedImages } = useImageContext();
 
-  const { posenetValues } = usePosenetContext();
-
   const canvasRef = useRef();
+
+  const { posenetValues } = usePosenetContext();
 
   useEffect(() => {
     if (imagesData.length === 0) return; // Wait for the imagesData to be available
@@ -49,11 +46,9 @@ const Threejs = () => {
     const width = window.innerWidth;
     const height = window.innerHeight;
 
-    // Setup Scene
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000000);
 
-    // Setup Camera
     const camera = new THREE.PerspectiveCamera(
       preset.camera.fov,
       width / height,
@@ -63,7 +58,6 @@ const Threejs = () => {
     camera.aspect = width / height;
     camera.position.z = preset.camera.zoom;
 
-    // Setup Renderer
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       preserveDrawingBuffer: true,
@@ -74,7 +68,6 @@ const Threejs = () => {
     const canvas = renderer.domElement;
     canvasRef.current.appendChild(canvas);
 
-    // Setup Geometry and Material
     const positions = [];
     const colors = [];
     const sizes = [];
@@ -94,7 +87,6 @@ const Threejs = () => {
       fragmentShader1
     );
 
-    // Setup Mesh
     const mesh = new THREE.Points(geometry, material);
 
     mesh.position.x = 0;
@@ -105,18 +97,14 @@ const Threejs = () => {
     mesh.rotation.y = preset.movement.rotationY;
     mesh.rotation.z = -Math.PI / 2;
 
-    // setup scene
     scene.add(mesh);
 
-    // Setup Lighting
     const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
     directionalLight.position.set(0, 0, 2);
     scene.add(directionalLight);
 
-    // Setup Orbit Controls
     const controls = new OrbitControls(camera, canvas);
 
-    // Setup Post Processing
     const afterimagePass = three_post_processing.afterImageEffect();
     const bloomPass = three_post_processing.glowEffect(gui.params);
     const composer = three_post_processing.setupPostProcessing(
@@ -145,7 +133,6 @@ const Threejs = () => {
       mesh
     );
 
-    // Render Function
     const render = () => {
       requestAnimationFrame(render);
 
@@ -159,34 +146,28 @@ const Threejs = () => {
       // Update uniforms based on GUI, posenet and audio volume
       updateUniformsBasedOnGui(material, gui, frameCount, volume);
       updateUniformsBasedOnVolume(material, gui, frameCount, volume);
-
-      if (posenetValues) {
-        updateUniformsBasedOnPosenet(material, posenetValues);
-      }
+      updateUniformsBasedOnPosenet(posenetValues, material);
 
       mesh.rotation.x += gui.params.rotationX;
       mesh.rotation.y += gui.params.rotationY;
       mesh.rotation.z += gui.params.rotationZ;
 
-      if (volume * gui.params.soundIntensity > 1.5) {
-        changeImage(imagesData, uploadedImages.length, positions, colors, mesh);
-      }
-
-      // Update passes
       bloomPass.threshold = gui.params.bloomThreshold;
       bloomPass.strength = gui.params.bloomStrength;
       afterimagePass.uniforms.damp.value = gui.params.exposure;
 
-      // Choose between composer and renderer
       if (gui.params.enableComposer) {
         composer.render();
       } else {
         renderer.render(scene, camera);
       }
 
-      // Play and stop animation
       if (!gui.params.animate) {
         frameCount = 1;
+      }
+
+      if (volume * gui.params.soundIntensity > 0.5 * 0.05) {
+        changeImage(imagesData, uploadedImages.length, positions, colors, mesh);
       }
     };
 
@@ -195,26 +176,13 @@ const Threejs = () => {
 
     gui.createGUI(gui.params, geometry, scene, bloomPass, render, renderer);
 
-    // Clean up
     return () => {
-      console.log("Threejs.js - Cleanup scene");
-
       scene.remove(mesh);
       geometry.dispose();
       material.dispose();
       renderer.dispose();
-
-      debugThreejs(
-        imagesData,
-        positions,
-        colors,
-        geometry,
-        material,
-        mesh,
-        posenetValues
-      );
     };
-  }, [imagesData, uploadedImages.length]);
+  }, [imagesData]);
 
   return <div ref={canvasRef} />;
 };

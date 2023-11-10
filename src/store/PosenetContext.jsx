@@ -5,9 +5,11 @@ const PosenetContext = createContext();
 const usePosenetContext = () => useContext(PosenetContext);
 
 const PosenetProvider = ({ children }) => {
-  const [posenetValues, setPosenetValues] = useState();
+  const [posenetValues, setPosenetValues] = useState({
+    rightHand: { x: 0, y: 0 },
+    leftHand: { x: 0, y: 0 },
+  });
 
-  // Function to update posenetValues
   const updatePosenetValues = (newValues) => {
     setPosenetValues(newValues);
   };

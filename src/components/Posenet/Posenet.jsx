@@ -5,12 +5,12 @@ import * as styles from "./Posenet.styles";
 import { usePosenetContext } from "../../store/PosenetContext";
 
 const PoseNet = () => {
-  const { updatePosenetValues } = usePosenetContext();
-
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
   const streamSize = 200;
+
+  const { updatePosenetValues } = usePosenetContext();
 
   useEffect(() => {
     const setupCamera = async () => {
@@ -56,8 +56,8 @@ const PoseNet = () => {
 
             drawPose(pose.keypoints, ctx);
 
-            // use this object to update posenet context
-            const posenetValues = {
+            // Update posenet context
+            updatePosenetValues({
               leftHand: {
                 x: pose.keypoints[9].position.x,
                 y: pose.keypoints[9].position.y,
@@ -66,9 +66,7 @@ const PoseNet = () => {
                 x: pose.keypoints[10].position.x,
                 y: pose.keypoints[10].position.y,
               },
-            };
-
-            updatePosenetValues(posenetValues);
+            });
 
             // Log keypoints' values
             // pose.keypoints.forEach((keypoint) => {

@@ -1,4 +1,3 @@
-// ImageContext.js
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { createImageObjects, getImagesData } from "./utils";
 
@@ -9,7 +8,6 @@ const imgHeight = Math.pow(preset.core.particleCount, 0.5);
 
 const ImageContext = createContext();
 
-// Custom hook to access the context values
 const useImageContext = () => useContext(ImageContext);
 
 const ImageProvider = ({ children }) => {
@@ -17,13 +15,13 @@ const ImageProvider = ({ children }) => {
   const [imagesData, setImagesData] = useState([]);
   const [imageLoading, setImageLoading] = useState(false);
 
-  const imageList = createImageObjects(uploadedImages);
-
   useEffect(() => {
     const updateImagesData = async () => {
-      const newImagesData = await getImagesData(imageList, imgWidth, imgHeight);
-
-      console.log("ImageContext.js - New Images Data:");
+      const newImagesData = await getImagesData(
+        createImageObjects(uploadedImages),
+        imgWidth,
+        imgHeight
+      );
 
       console.log({ newImagesData: newImagesData });
 
