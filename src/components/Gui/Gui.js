@@ -1,5 +1,5 @@
 import { GUI } from "dat.gui";
-import { preset } from "../../presets/preset";
+import { preset } from "../../presets";
 
 console.log({ gui_preset: preset });
 
@@ -53,7 +53,7 @@ export function createGUI(
   animate,
   renderer
 ) {
-  const gui = new GUI({ name: "Control Station" });
+  const gui = new GUI({ name: "Control Station"});
 
   const coreProperties = gui.addFolder("Core");
   coreProperties
@@ -121,7 +121,7 @@ export function createGUI(
   colorProperties.add(params, "vertexRed").min(-10).max(10).step(0.001);
   colorProperties.add(params, "vertexGreen").min(-10).max(10).step(0.001);
   colorProperties.add(params, "vertexBlue").min(-10).max(10).step(0.001);
-  colorProperties.add(params, "colorContrast").min(0).max(5).step(0.001);
+  colorProperties.add(params, "colorContrast").min(0).max(1).step(0.001);
 
   const soundProperties = gui.addFolder("Sound");
   soundProperties.add(params, "soundIntensity").min(-100).max(100).step(0.01);
@@ -137,7 +137,7 @@ export function createGUI(
   );
 
   postProcessing
-    .add(params, "bloomStrength", 0.0, 10.0)
+    .add(params, "bloomStrength", 0.0, 100.0)
     .step(0.001)
     .onChange(
       function (value) {

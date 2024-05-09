@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { createImageObjects, getImagesData } from "./utils";
 
-import { preset } from "../presets/preset";
+import { preset } from "../presets";
 
 const imgWidth = Math.pow(preset.core.particleCount, 0.5);
 const imgHeight = Math.pow(preset.core.particleCount, 0.5);

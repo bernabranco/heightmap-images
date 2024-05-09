@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
 import ImageUploadComponent from "../../components/ImageUpload/ImageUpload";
 import { useImageContext } from "../../store/ImageContext";
 import { Button } from "../../styles/common.styles";
+
+import * as gui from "../../components/Gui/Gui";
 
 const LoadImages = () => {
   const navigate = useNavigate();
@@ -14,6 +16,10 @@ const LoadImages = () => {
   const { imageLoading } = useImageContext();
 
   console.log({ imagesLoading: imageLoading });
+
+  useEffect(() => {
+    //gui.
+  });
 
   return (
     <>

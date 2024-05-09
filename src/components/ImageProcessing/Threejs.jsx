@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useImageContext } from "../../store/ImageContext";
 import * as THREE from "three";
 
-import { preset } from "../../presets/preset";
+import { preset } from "../../presets";
 import { createGrid } from "../Image/ImageSetup";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";

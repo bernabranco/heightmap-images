@@ -1,5 +1,8 @@
 import { useImageContext } from "../../../../store/ImageContext";
+
 import { ImageContainer, Image, Title, Container } from "./ImageDisplay.styles";
+
+import { useNavigate } from "react-router";
 
 export const ImageDisplay = () => {
   const { uploadedImages } = useImageContext();
@@ -10,9 +13,16 @@ export const ImageDisplay = () => {
     );
   });
 
+  const navigate = useNavigate();
+
+  const handleRefresh = () => {
+    navigate("/");
+  };
+
   return (
     <Container>
       <Title>Image Display</Title>
+      <button onClick={handleRefresh}>Refresh</button>
       <ImageContainer>{imgList}</ImageContainer>
     </Container>
   );

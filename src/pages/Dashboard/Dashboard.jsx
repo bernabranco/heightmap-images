@@ -3,9 +3,12 @@ import { useNavigate } from "react-router";
 import Threejs from "../../components/ImageProcessing/Threejs";
 import Menu from "../../components/Menu/Menu";
 import { useImageContext } from "../../store/ImageContext";
+import { usePosenetContext } from "../../store/PosenetContext";
 
 export default function Dashboard() {
   const { uploadedImages } = useImageContext();
+
+  const { posenetValues } = usePosenetContext();
 
   const navigate = useNavigate();
 
@@ -20,6 +23,8 @@ export default function Dashboard() {
 
     console.log({ uploadedImages: uploadedImages });
   }, [uploadedImages, goToStartScreen]);
+
+  console.log(posenetValues);
 
   return (
     <>

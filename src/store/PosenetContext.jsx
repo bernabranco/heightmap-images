@@ -21,4 +21,4 @@ const PosenetProvider = ({ children }) => {
   );
 };
 
-export { PosenetProvider, usePosenetContext, PosenetContext as default };
+export { PosenetProvider, usePosenetContext, PosenetContext };

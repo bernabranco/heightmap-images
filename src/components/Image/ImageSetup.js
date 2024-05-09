@@ -1,4 +1,4 @@
-import { preset } from "../../presets/preset";
+import { preset } from "../../presets";
 
 const imgWidth = Math.pow(preset.core.particleCount, 0.5);
 const imgHeight = Math.pow(preset.core.particleCount, 0.5);
@@ -10,7 +10,6 @@ export function createGrid(imagesData, positions, colors, sizes, acc) {
   console.log({ imagesData: imagesData });
 
   const imageData = imagesData[0];
-
   for (let x = 0; x < imgWidth; x++) {
     for (let y = 0; y < imgHeight; y++) {
       //define particle color
