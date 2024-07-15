@@ -1,3 +1,3 @@
-import { traits } from "./perlin";
+import { traits } from "./basic";
 
 export const preset = traits;
