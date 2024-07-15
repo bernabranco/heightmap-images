@@ -5,6 +5,7 @@ import Exporter from "./components/Exporter/Exporter";
 import { MenuContainer } from "./Menu.styles";
 import Fullscreen from "./components/Fullscreen/Fullscreen";
 import PoseNet from "../Posenet/Posenet";
+import Midi from "./components/Midi/Midi";
 
 export default function Menu() {
   return (
@@ -13,6 +14,7 @@ export default function Menu() {
       <Audio />
       <Exporter />
       <Fullscreen />
+      <Midi />
       {/* <PoseNet /> */}
     </MenuContainer>
   );
