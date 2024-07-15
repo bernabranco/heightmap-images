@@ -77,7 +77,7 @@ export function createGUI(
       { passive: true }
     );
   coreProperties.add(params, "particleSize").min(-100).max(100).step(0.01);
-  coreProperties.add(params, "particleSpeed").min(-10).max(10).step(0.001);
+  coreProperties.add(params, "particleSpeed").min(-10).max(1000).step(0.01);
 
   // const cameraProperties = gui.addFolder("Camera");
   // cameraProperties.add(params, "cameraX").min(-1000).max(1000).step(1);

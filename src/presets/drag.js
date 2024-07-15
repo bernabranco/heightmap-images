@@ -4,6 +4,7 @@ export const traits = {
     particleCount: Math.pow(2, 16),
     particleSize: 37.62,
     particleSpeed: 5.747,
+    fps: 1,
   },
   position: {
     offsetX: 1,
