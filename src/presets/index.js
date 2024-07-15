@@ -1,3 +1,3 @@
-import { traits } from "./basic";
+import { traits } from "./blink";
 
 export const preset = traits;
