@@ -41,6 +41,7 @@ const Threejs = () => {
   const { posenetValues } = usePosenetContext();
 
   useEffect(() => {
+    // TODO: go back to homepage
     if (imagesData.length === 0) return; // Wait for the imagesData to be available
 
     const width = window.innerWidth;
@@ -134,44 +135,54 @@ const Threejs = () => {
     );
 
     const render = () => {
-      requestAnimationFrame(render);
-
-      frameCount++;
-
-      material.needsUpdate = true;
-      mesh.geometry.attributes.position.needsUpdate = true;
-      mesh.geometry.attributes.color.needsUpdate = true;
-      mesh.geometry.attributes.size.needsUpdate = true;
-
-      // Update uniforms based on GUI, posenet and audio volume
-      updateUniformsBasedOnGui(material, gui, frameCount, volume);
-      updateUniformsBasedOnVolume(material, gui, frameCount, volume);
-      updateUniformsBasedOnPosenet(posenetValues, material);
-
-      mesh.rotation.x += gui.params.rotationX;
-      mesh.rotation.y += gui.params.rotationY;
-      mesh.rotation.z += gui.params.rotationZ;
-
-      bloomPass.threshold = gui.params.bloomThreshold;
-      bloomPass.strength = gui.params.bloomStrength;
-      afterimagePass.uniforms.damp.value = gui.params.exposure;
-
-      if (gui.params.enableComposer) {
-        composer.render();
-      } else {
-        renderer.render(scene, camera);
-      }
-
       if (!gui.params.animate) {
         frameCount = 1;
+        return;
       }
 
-      if (volume * gui.params.soundIntensity > 0.5 * 0.05) {
-        changeImage(imagesData, uploadedImages.length, positions, colors, mesh);
-      }
+      setTimeout(() => {
+        requestAnimationFrame(render);
+
+        frameCount++;
+
+        material.needsUpdate = true;
+        mesh.geometry.attributes.position.needsUpdate = true;
+        mesh.geometry.attributes.color.needsUpdate = true;
+        mesh.geometry.attributes.size.needsUpdate = true;
+
+        // Update uniforms based on GUI, posenet and audio volume
+        updateUniformsBasedOnGui(material, gui, frameCount, volume);
+        updateUniformsBasedOnVolume(material, gui, frameCount, volume);
+        updateUniformsBasedOnPosenet(posenetValues, material);
+
+        mesh.rotation.x += gui.params.rotationX;
+        mesh.rotation.y += gui.params.rotationY;
+        mesh.rotation.z += gui.params.rotationZ;
+
+        bloomPass.threshold = gui.params.bloomThreshold;
+        bloomPass.strength = gui.params.bloomStrength;
+        afterimagePass.uniforms.damp.value = gui.params.exposure;
+
+        if (gui.params.enableComposer) {
+          composer.render();
+        } else {
+          renderer.render(scene, camera);
+        }
+
+        if (volume > gui.params.soundIntensity) {
+          changeImage(
+            imagesData,
+            uploadedImages.length,
+            positions,
+            colors,
+            mesh
+          );
+        }
+      }, gui.params.fps);
     };
 
     let frameCount = -1;
+
     render();
 
     gui.createGUI(gui.params, geometry, scene, bloomPass, render, renderer);

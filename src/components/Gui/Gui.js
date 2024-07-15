@@ -37,6 +37,8 @@ export const params = {
 
   soundIntensity: preset.sound.soundIntensity,
 
+  fps: preset.core.fps,
+
   // cameraX: 0, // camera
   // cameraY: 0,
   // cameraZ: 900,
@@ -53,12 +55,14 @@ export function createGUI(
   animate,
   renderer
 ) {
-  const gui = new GUI({ name: "Control Station"});
+  const gui = new GUI({ name: "Control Station", width: 500 });
 
   const coreProperties = gui.addFolder("Core");
   coreProperties
     .add(params, "animate")
     .onChange(() => animate(), { passive: true });
+
+  coreProperties.add(params, "fps").min(0).max(10000).step(0.01);
 
   coreProperties
     .add(params, "particleCount")
@@ -147,7 +151,7 @@ export function createGUI(
     );
 
   postProcessing
-    .add(params, "bloomThreshold", 0.0, 1.0)
+    .add(params, "bloomThreshold", 0.0, 100.0)
     .step(0.001)
     .onChange(
       function (value) {
@@ -157,7 +161,7 @@ export function createGUI(
     );
 
   postProcessing
-    .add(params, "bloomRadius", 0.0, 1.0)
+    .add(params, "bloomRadius", 0.0, 10000.0)
     .step(0.001)
     .onChange(
       function (value) {
